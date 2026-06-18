@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Виртуальный музей «Александр Невский»</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gl:#E8D08A;--gd:#8B6914;--deep:#110D05;--parch:#F5EDD8;--parchd:#E8D9B8;--ink:#2C1F0A;--inkm:#5C4A2A;--inkl:#8B7355;--brd:rgba(201,168,76,.35);--red:#8B2020;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--deep);color:var(--ink);font-family:'EB Garamond',Georgia,serif;font-size:17px;line-height:1.75;}
+::selection{background:var(--gold);color:var(--deep);}
+
+/* HERO */
+.hero{background:linear-gradient(170deg,rgba(6,4,2,.92),rgba(17,13,5,.88) 40%,rgba(26,18,8,.85) 80%,rgba(13,10,5,.92)),url("images/nevsky-portrait.jpg") center/cover no-repeat;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 45%,rgba(201,168,76,.06) 0%,transparent 70%);pointer-events:none;}
+.hero-orn{color:var(--gold);opacity:.4;margin-bottom:1.5rem;font-size:.9rem;letter-spacing:1em;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5.5vw,4.5rem);font-weight:700;color:var(--gl);letter-spacing:.03em;line-height:1.15;}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero-sub{font-style:italic;color:var(--inkl);margin-top:.8rem;letter-spacing:.08em;font-size:1.05rem;}
+.hdiv{width:180px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:1.8rem auto;}
+.hero-desc{max-width:780px;font-size:1.05rem;color:#BBA87A;line-height:1.85;}
+.hero-meta{display:flex;gap:3rem;margin-top:2.5rem;justify-content:center;flex-wrap:wrap;}
+.hmi{text-align:center;}
+.hmi .num{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);display:block;}
+.hmi .lbl{font-size:.8rem;color:var(--inkl);letter-spacing:.12em;text-transform:uppercase;}
+.scroll-h{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:var(--gold);opacity:.4;font-size:1.5rem;animation:bob 2.5s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* NAV */
+nav{background:rgba(6,4,2,.95);border-bottom:1px solid var(--brd);position:sticky;top:0;z-index:100;padding:0 2rem;backdrop-filter:blur(8px);}
+.nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px;}
+.nav-lg{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--gold);text-decoration:none;letter-spacing:.05em;}
+.nav-lk{display:flex;list-style:none;}
+.nav-lk a{color:var(--inkl);text-decoration:none;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;padding:0 1.1rem;height:52px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:all .2s;}
+.nav-lk a:hover{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* SECTIONS */
+.sp{background:var(--parch);padding:5rem 2rem;}
+.sd{background:#0E0A04;padding:5rem 2rem;}
+.sm{background:#130F07;padding:5rem 2rem;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);}
+.con{max-width:1200px;margin:0 auto;}
+.sl{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gd);margin-bottom:.75rem;}
+.sl.lt{color:var(--gold);}
+.st{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3.8vw,2.6rem);font-weight:700;color:var(--ink);line-height:1.2;}
+.st.lt{color:var(--gl);}
+.sdiv{width:70px;height:2px;background:var(--gold);margin:1.3rem 0 2.2rem;}
+
+/* INFO GRID */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-top:2.2rem;}
+.ic{background:white;border:1px solid var(--parchd);border-left:3px solid var(--gold);padding:1.4rem 1.6rem;border-radius:2px;}
+.ic h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--gd);margin-bottom:.5rem;}
+.ic p{font-size:.93rem;color:var(--inkm);line-height:1.65;}
+.tcol{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;margin:1.5rem 0;}
+
+/* TABS */
+.etab-nav{display:flex;gap:.8rem;margin-bottom:2.5rem;flex-wrap:wrap;}
+.etab{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:.55rem 1.3rem;font-family:'EB Garamond',serif;font-size:.95rem;cursor:pointer;letter-spacing:.04em;transition:all .25s;border-radius:1px;}
+.etab:hover,.etab.active{background:var(--gold);color:var(--deep);}
+.exc{display:none;}.exc.active{display:block;}
+.exc-hd{border-bottom:1px solid var(--brd);padding-bottom:2rem;margin-bottom:2.5rem;}
+.exc-num{font-family:'Playfair Display',serif;font-size:4.5rem;color:var(--gold);opacity:.15;line-height:1;float:right;margin-left:1.5rem;}
+.exc-t{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);color:var(--gl);margin-bottom:.5rem;}
+.exc-g{font-size:.93rem;color:#A08B5C;font-style:italic;border-left:2px solid var(--gold);padding-left:1rem;margin-top:1rem;}
+
+/* SUBTOPIC */
+.sub{margin-bottom:3rem;padding-bottom:2.5rem;border-bottom:1px solid rgba(201,168,76,.12);}
+.sub:last-of-type{border-bottom:none;}
+.sublbl{display:inline-block;background:var(--gold);color:var(--deep);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;padding:2px 11px;margin-bottom:.8rem;}
+.sub h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--gl);margin-bottom:1rem;}
+
+/* FIGURES */
+.fig{margin:1.5rem 0;border:1px solid rgba(201,168,76,.25);border-radius:2px;overflow:hidden;background:#080603;}
+.fig svg{width:100%;display:block;}
+.figcap{background:rgba(201,168,76,.06);border-top:1px solid rgba(201,168,76,.18);padding:.55rem 1rem;font-size:.78rem;color:#7A6840;font-style:italic;line-height:1.5;}
+
+/* GUIDE TEXT */
+.gb{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.18);border-left:3px solid var(--gold);padding:1.4rem 1.6rem;margin:1.2rem 0;border-radius:0 2px 2px 0;}
+.glbl{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;display:flex;align-items:center;gap:8px;}
+.glbl::after{content:'';flex:1;height:1px;background:rgba(201,168,76,.25);}
+.gb p{color:#C8B07A;font-size:1.02rem;line-height:1.85;font-style:italic;}
+.gb p+p{margin-top:1rem;}
+
+/* BLOCKQUOTE — citations from sources */
+.cit{margin:1.5rem 0;padding:1.3rem 1.6rem 1.3rem 1.8rem;border-left:3px solid var(--red);background:rgba(139,32,32,.06);border-radius:0 2px 2px 0;position:relative;}
+.cit::before{content:'«';font-family:'Playfair Display',serif;font-size:3rem;color:var(--red);opacity:.3;position:absolute;top:.2rem;left:.5rem;line-height:1;}
+.cit p{color:#C8A06A;font-size:1.02rem;line-height:1.8;font-style:italic;padding-left:.5rem;}
+.cit-src{display:block;margin-top:.6rem;font-size:.82rem;color:#7A5A30;font-style:normal;padding-left:.5rem;}
+
+/* CONCLUSION */
+.cv{background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);padding:1.1rem 1.5rem;margin-top:1.3rem;border-radius:2px;}
+.cvlbl{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;}
+.cv p{color:#A08B5C;font-size:.93rem;}
+
+/* TASKS */
+.tb{background:#151008;border:1px solid var(--brd);padding:1.8rem;margin-top:2.2rem;border-radius:2px;}
+.tbt{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold);margin-bottom:1.3rem;padding-bottom:.65rem;border-bottom:1px solid var(--brd);}
+.ti{display:flex;gap:.9rem;margin-bottom:1.1rem;align-items:flex-start;}
+.tn{background:var(--gold);color:var(--deep);width:24px;height:24px;min-width:24px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;border-radius:50%;margin-top:3px;}
+.tt2{color:#BBA87A;font-size:.92rem;line-height:1.65;}
+.tt2 strong{color:var(--gl);font-style:italic;font-weight:normal;}
+
+/* SOURCES */
+.src{margin-top:2.2rem;padding-top:1.3rem;border-top:1px solid var(--brd);}
+.srct{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;}
+.srcl{list-style:none;counter-reset:s;}
+.srcl li{counter-increment:s;color:#7A6840;font-size:.85rem;line-height:1.55;padding-left:1.7em;position:relative;margin-bottom:.35rem;}
+.srcl li::before{content:counter(s)'.';position:absolute;left:0;color:var(--gold);font-weight:600;}
+
+/* TRANSITIONS */
+.trl{text-align:center;color:var(--gold);opacity:.35;font-size:1.4rem;letter-spacing:.3em;margin:1.8rem 0 .8rem;}
+
+/* VIDEO */
+.vbl{margin:2rem 0;border:1px solid rgba(201,168,76,.25);border-radius:2px;overflow:hidden;}
+.vbl-in{background:linear-gradient(135deg,#080603,#151008);padding:2.2rem 1.8rem;text-align:center;}
+.vbl a{display:inline-flex;align-items:center;gap:.6rem;background:var(--gold);color:var(--deep);text-decoration:none;font-family:'EB Garamond',serif;font-size:1rem;font-weight:600;padding:.65rem 1.8rem;border-radius:2px;letter-spacing:.04em;transition:background .2s;}
+.vbl a:hover{background:var(--gl);}
+.vbl-d{color:#7A6840;font-size:.85rem;margin-top:.8rem;font-style:italic;}
+.vbl-cap{padding:.55rem 1rem;font-size:.78rem;color:#7A6840;font-style:italic;background:rgba(201,168,76,.04);border-top:1px solid rgba(201,168,76,.18);}
+
+/* KEY FACTS BOXES */
+.kf{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0;}
+.kf-item{border:1px solid rgba(201,168,76,.2);padding:1rem;text-align:center;border-radius:2px;background:rgba(201,168,76,.03);}
+.kf-num{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);display:block;line-height:1.2;}
+.kf-lbl{font-size:.8rem;color:#8B7355;margin-top:.3rem;display:block;}
+
+/* ORNAMENTAL DIVIDER */
+.orn{text-align:center;margin:2rem 0;color:var(--gold);opacity:.3;font-size:.8rem;letter-spacing:1.2em;}
+
+/* FOOTER */
+footer{background:#050302;border-top:1px solid var(--brd);padding:2.5rem 2rem;text-align:center;color:var(--inkl);font-size:.85rem;}
+.ft{font-family:'Playfair Display',serif;color:var(--gold);font-size:1rem;margin-bottom:.4rem;}
+
+@media(max-width:680px){.mgrid,.tcol,.kf{grid-template-columns:1fr;}.nav-lk{display:none;}.exc-num{font-size:3rem;}.kf{grid-template-columns:repeat(2,1fr);}}
+/* WIDE LAYOUTS */
+.wide-2col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;margin:1.5rem 0;}
+.wide-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;margin:1.5rem 0;}
+.side-panel{display:grid;grid-template-columns:280px 1fr;gap:2rem;align-items:start;margin:1.5rem 0;}
+.side-panel-r{display:grid;grid-template-columns:1fr 280px;gap:2rem;align-items:start;margin:1.5rem 0;}
+.side-box{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.18);padding:1.2rem 1.4rem;border-radius:2px;}
+.side-box h4{font-family:"Playfair Display",serif;font-size:1rem;color:var(--gold);margin-bottom:.6rem;}
+.side-box p,.side-box li{color:#A08B5C;font-size:.88rem;line-height:1.6;}
+.side-box ul{list-style:none;padding:0;}
+.side-box ul li{padding-left:1em;position:relative;margin-bottom:.3rem;}
+.side-box ul li::before{content:"▪";position:absolute;left:0;color:var(--gold);}
+.full-bleed{margin-left:-3rem;margin-right:-3rem;padding:2rem 3rem;background:rgba(201,168,76,.03);border-top:1px solid rgba(201,168,76,.12);border-bottom:1px solid rgba(201,168,76,.12);}
+.stat-bar{display:flex;gap:0;margin:1.5rem 0;border:1px solid rgba(201,168,76,.2);border-radius:2px;overflow:hidden;}
+.stat-bar-item{flex:1;padding:1rem;text-align:center;border-right:1px solid rgba(201,168,76,.12);background:rgba(201,168,76,.03);}
+.stat-bar-item:last-child{border-right:none;}
+.stat-bar-item .sb-num{font-family:"Playfair Display",serif;font-size:1.4rem;color:var(--gold);display:block;}
+.stat-bar-item .sb-lbl{font-size:.75rem;color:#8B7355;margin-top:.2rem;display:block;text-transform:uppercase;letter-spacing:.08em;}
+@media(max-width:900px){.wide-2col,.side-panel,.side-panel-r{grid-template-columns:1fr;}.wide-3col{grid-template-columns:1fr 1fr;}.full-bleed{margin-left:-1rem;margin-right:-1rem;padding:1.5rem 1rem;}}
+@media(max-width:680px){.wide-3col{grid-template-columns:1fr;}}
+
+/* ===== CAROUSEL ===== */
+.carousel{margin:1.8rem 0;border:1px solid rgba(201,168,76,.3);border-radius:3px;overflow:hidden;background:#08060A;position:relative;}
+.carousel-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1);}
+.carousel-slide{min-width:100%;position:relative;}
+.carousel-slide img{width:100%;height:320px;object-fit:cover;display:block;filter:brightness(.88) contrast(1.05);}
+.carousel-cap{padding:.65rem 1.2rem;background:rgba(0,0,0,.75);border-top:1px solid rgba(201,168,76,.18);font-family:'EB Garamond',Georgia,serif;font-size:.85rem;color:#A08B5C;font-style:italic;min-height:2.4rem;}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.65);border:1px solid rgba(201,168,76,.5);color:var(--gold);width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;z-index:5;transition:all .2s;border-radius:2px;}
+.carousel-btn:hover{background:rgba(201,168,76,.25);border-color:var(--gold);}
+.carousel-btn.prev{left:10px;}
+.carousel-btn.next{right:10px;}
+.carousel-dots{display:flex;justify-content:center;gap:6px;padding:.55rem 0 .7rem;background:rgba(0,0,0,.5);}
+.carousel-dot{width:7px;height:7px;border-radius:50%;background:rgba(201,168,76,.25);border:1px solid rgba(201,168,76,.4);cursor:pointer;transition:all .2s;}
+.carousel-dot.active{background:var(--gold);border-color:var(--gl);}
+@media(max-width:680px){.carousel-slide img{height:200px;}}
+
+/* ===== QUIZ ===== */
+.quiz-section{background:#0C0904;border-top:2px solid rgba(201,168,76,.3);padding:5rem 2rem;}
+.quiz-wrap{max-width:860px;margin:0 auto;}
+.quiz-q{background:#120E06;border:1px solid rgba(201,168,76,.2);border-radius:3px;margin-bottom:2rem;overflow:hidden;}
+.quiz-q-head{padding:1.1rem 1.5rem;background:rgba(201,168,76,.06);border-bottom:1px solid rgba(201,168,76,.12);}
+.quiz-q-num{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.3rem;}
+.quiz-q-text{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gl);}
+.quiz-opts{padding:1rem 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.quiz-opt{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.18);padding:.65rem 1rem;cursor:pointer;font-family:'EB Garamond',Georgia,serif;font-size:.95rem;color:#BBA87A;border-radius:2px;transition:all .2s;text-align:left;}
+.quiz-opt:hover:not(.answered){background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.5);color:var(--gl);}
+.quiz-opt.correct{background:rgba(30,80,30,.5);border-color:#4A9A4A;color:#8AEA8A;}
+.quiz-opt.wrong{background:rgba(80,20,20,.5);border-color:#9A3A3A;color:#EA8A8A;}
+.quiz-opt.answered{cursor:default;}
+.quiz-hint{margin:0 1.5rem 1rem;padding:.75rem 1rem;background:rgba(201,168,76,.06);border-left:3px solid var(--gold);font-size:.9rem;color:#A08B5C;font-style:italic;display:none;border-radius:0 2px 2px 0;}
+.quiz-hint.show{display:block;}
+.quiz-score{text-align:center;padding:2rem;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.2);border-radius:3px;margin-top:1.5rem;}
+.quiz-score-num{font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);}
+.quiz-score-lbl{color:#A08B5C;margin-top:.4rem;}
+.quiz-reset{margin-top:1.2rem;background:var(--gold);color:var(--deep);border:none;padding:.7rem 2rem;font-family:'EB Garamond',Georgia,serif;font-size:1rem;cursor:pointer;border-radius:2px;letter-spacing:.05em;transition:background .2s;}
+.quiz-reset:hover{background:var(--gl);}
+@media(max-width:600px){.quiz-opts{grid-template-columns:1fr;}}
+
+</style>
+</head>
+<body>
+<section class="hero" id="home">
+<div class="hero-orn">ВИРТУАЛЬНЫЙ МУЗЕЙ</div>
+<h1>Александр <em>Невский</em></h1>
+<p class="hero-sub">Полководец · Дипломат · Святой · Русь XIII–XV вв.</p>
+<div class="hdiv"></div>
+<p class="hero-desc">Добро пожаловать в виртуальный музей, посвящённый жизни и подвигам святого благоверного князя Александра Ярославича Невского (ок. 1221–1263) — полководца, дипломата и защитника Руси в эпоху монгольского ига и западной экспансии.</p>
+<div class="hero-meta">
+<div class="hmi"><span class="num">XIII–XV</span><span class="lbl">Века</span></div>
+<div class="hmi"><span class="num">3</span><span class="lbl">Экскурсии</span></div>
+<div class="hmi"><span class="num">12</span><span class="lbl">Подтем</span></div>
+<div class="hmi"><span class="num">1221–1263</span><span class="lbl">Годы жизни</span></div>
+</div>
+<div class="scroll-h">↓</div>
+</section>
+<nav><div class="nav-in">
+<a href="#home" class="nav-lg">Музей «Александр Невский»</a>
+<ul class="nav-lk"><li><a href="#about">О музее</a></li><li><a href="#tours">Экскурсии</a></li><li><a href="#quiz">Викторина</a></li><li><a href="#home">Наверх ↑</a></li></ul>
+</div></nav>
+<section class="sp" id="about">
+<div class="con">
+<p class="sl">О музее</p>
+<h2 class="st">Виртуальный музей «Александр Невский»</h2>
+<div class="sdiv"></div>
+<p style="margin-bottom:1.5rem;">Музей посвящён одной из ключевых фигур русской истории XIII века — новгородскому и владимирскому князю, великому полководцу и искусному дипломату. Экспозиция охватывает период с 1220-х по 1380-е годы и раскрывает военные подвиги Александра, его дипломатию с Ордой и формирование исторической памяти — от «Жития» XIII века до наших дней.</p>
+<div class="cit" style="border-left-color:var(--gd);background:rgba(201,168,76,.06);">
+<p>Не в силе Бог, а в правде.</p>
+<span class="cit-src">— Слова, приписываемые Александру Невскому (Житие, конец XIII в.)</span>
+</div>
+<div class="mgrid">
+<div class="ic"><h3>Период</h3><p>XIII–XV века (1220–1380-е гг.). Эпоха монгольского ига, борьбы с западной экспансией и постепенного собирания русских земель.</p></div>
+<div class="ic"><h3>Тематика</h3><p>Военные победы, дипломатия с Ордой, канонизация, историческая память и влияние наследия на последующие века русской истории.</p></div>
+<div class="ic"><h3>Структура</h3><p>Три экскурсии: «Меч и щит Руси» (военные победы), «Дипломат на краю пропасти» (политика с Ордой), «Святой полководец в веках» (историческая память).</p></div>
+<div class="ic"><h3>Миссия</h3><p>Сохранить память об Александре Невском, показать сложность его выбора в условиях двойной угрозы — и вдохновить на критическое изучение эпохи.</p></div>
+</div>
+</div>
+</section>
+<section class="sd" id="tours">
+<div class="con">
+<p class="sl lt">Экскурсионные программы</p>
+<h2 class="st lt">Три экскурсии музея</h2>
+<div class="sdiv"></div>
+<div class="etab-nav">
+<button class="etab active" onclick="showTour(1)">I. Меч и щит Руси</button>
+<button class="etab" onclick="showTour(2)">II. Дипломат на краю пропасти</button>
+<button class="etab" onclick="showTour(3)">III. Святой полководец в веках</button>
+</div>
+
+<!-- ===== ЭКСКУРСИЯ 1 ===== -->
+<div class="exc active" id="tour-1">
+<div class="exc-hd">
+<div class="exc-num">I</div>
+<p class="sl lt">Экскурсия первая</p>
+<h2 class="exc-t">«Меч и щит Руси»: Военные победы Александра Невского</h2>
+<p class="exc-g"><strong>Цель:</strong> показать военный гений Александра Невского, раскрыть ход и значение Невской битвы (1240) и Ледового побоища (1242), объяснить стратегический и общеисторический смысл этих побед для судьбы Руси.</p>
+</div>
+
+<div class="sub">
+<span class="sublbl">Подтема 1</span>
+<h3>Молодой князь и угрозы с Запада</h3>
+<div class="fig">
+<svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#1A3020" stroke-width=".8"/></pattern>
+<pattern id="hatchW" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)"><line x1="0" y1="0" x2="0" y2="5" stroke="#0A1520" stroke-width=".6"/></pattern>
+<filter id="age"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="4" result="n"/><feColorMatrix type="saturate" values="0" in="n" result="g"/><feBlend in="SourceGraphic" in2="g" mode="multiply"/></filter>
+<marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#943333"/></marker>
+<marker id="a2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#334499"/></marker>
+<marker id="a3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#996633"/></marker>
+</defs>
+<rect width="700" height="340" fill="#0B0804"/>
+<!-- Parchment texture -->
+<rect width="700" height="340" fill="url(#hatch)" opacity=".15"/>
+<!-- Water areas -->
+<path d="M10 10 Q60 25 100 15 Q130 20 150 10 L150 80 Q120 65 80 75 Q40 60 10 70Z" fill="url(#hatchW)" opacity=".4"/>
+<path d="M0 120 Q30 110 60 130 Q20 150 0 145Z" fill="url(#hatchW)" opacity=".3"/>
+<path d="M180 180 Q220 160 260 175 Q240 200 200 210 Q185 195 180 180Z" fill="url(#hatchW)" opacity=".35" stroke="#1A3A5A" stroke-width=".5"/>
+<text x="215" y="195" text-anchor="middle" font-family="Georgia" font-size="7" fill="#3A6A9A" font-style="italic">Чудское оз.</text>
+<!-- Land — fine line borders -->
+<path d="M55 45 Q160 30 265 50 Q370 35 440 65 Q520 48 640 75 Q665 110 658 195 Q640 265 598 300 Q520 325 440 310 Q360 330 275 320 Q195 330 130 300 Q68 268 55 210 Q42 148 55 45Z" fill="none" stroke="#3A5A2A" stroke-width="1.2" stroke-dasharray="2 1"/>
+<!-- Regions with fine crosshatch -->
+<path d="M200 60 Q260 52 310 70 Q340 55 370 65 Q380 95 370 130 Q340 150 295 145 Q250 155 220 135 Q195 110 200 60Z" fill="#12200D" stroke="#2A4A1A" stroke-width=".8"/>
+<text x="285" y="98" text-anchor="middle" font-family="Georgia" font-size="12" fill="#6A9A50" font-weight="bold" letter-spacing="1">НОВГОРОДЪ</text>
+<text x="285" y="113" text-anchor="middle" font-family="Georgia" font-size="9" fill="#4A7A30">Земля Новгородская</text>
+<path d="M370 85 Q430 70 490 90 Q520 120 510 175 Q490 210 440 215 Q395 220 375 190 Q355 155 370 85Z" fill="#0D1A08" stroke="#2A4A1A" stroke-width=".8"/>
+<text x="440" y="150" text-anchor="middle" font-family="Georgia" font-size="10" fill="#4A7A30">Владимирское</text>
+<text x="440" y="163" text-anchor="middle" font-family="Georgia" font-size="10" fill="#4A7A30">княжество</text>
+<!-- ARROWS — Swedish -->
+<path d="M92 52 Q170 72 245 100" stroke="#943333" stroke-width="2" fill="none" marker-end="url(#a1)" stroke-dasharray="6 3"/>
+<g transform="translate(42,38)"><rect x="0" y="0" width="65" height="28" rx="2" fill="rgba(0,0,0,.6)" stroke="#943333" stroke-width=".5"/><text x="32" y="12" text-anchor="middle" font-family="Georgia" font-size="9" fill="#CC5555" font-weight="bold">ШВЕЦИЯ</text><text x="32" y="23" text-anchor="middle" font-family="Georgia" font-size="8" fill="#943333">1240 г.</text></g>
+<!-- Livonian -->
+<path d="M95 155 Q160 142 215 135" stroke="#334499" stroke-width="2" fill="none" marker-end="url(#a2)" stroke-dasharray="6 3"/>
+<g transform="translate(15,140)"><rect x="0" y="0" width="82" height="38" rx="2" fill="rgba(0,0,0,.6)" stroke="#334499" stroke-width=".5"/><text x="41" y="13" text-anchor="middle" font-family="Georgia" font-size="9" fill="#5577CC" font-weight="bold">ЛИВОНСКИЙ</text><text x="41" y="24" text-anchor="middle" font-family="Georgia" font-size="9" fill="#5577CC" font-weight="bold">ОРДЕН</text><text x="41" y="34" text-anchor="middle" font-family="Georgia" font-size="8" fill="#334499">1240–1242</text></g>
+<!-- Mongol -->
+<path d="M645 155 Q580 165 525 175" stroke="#996633" stroke-width="2" fill="none" marker-end="url(#a3)" stroke-dasharray="6 3"/>
+<g transform="translate(592,130)"><rect x="0" y="0" width="85" height="38" rx="2" fill="rgba(0,0,0,.6)" stroke="#996633" stroke-width=".5"/><text x="42" y="13" text-anchor="middle" font-family="Georgia" font-size="9" fill="#CC9955" font-weight="bold">ЗОЛОТАЯ</text><text x="42" y="24" text-anchor="middle" font-family="Georgia" font-size="9" fill="#CC9955" font-weight="bold">ОРДА</text><text x="42" y="34" text-anchor="middle" font-family="Georgia" font-size="8" fill="#996633">с 1237 г.</text></g>
+<!-- Battle markers -->
+<g transform="translate(255,102)"><circle r="5" fill="none" stroke="#C9A84C" stroke-width="1.5"/><line x1="-3" y1="-3" x2="3" y2="3" stroke="#C9A84C" stroke-width="1"/><line x1="3" y1="-3" x2="-3" y2="3" stroke="#C9A84C" stroke-width="1"/></g>
+<text x="275" y="115" font-family="Georgia" font-size="8" fill="#C9A84C" font-weight="bold">Невская битва</text>
+<text x="275" y="125" font-family="Georgia" font-size="8" fill="#C9A84C">15 VII 1240</text>
+<g transform="translate(210,178)"><circle r="5" fill="none" stroke="#C9A84C" stroke-width="1.5"/><line x1="-3" y1="-3" x2="3" y2="3" stroke="#C9A84C" stroke-width="1"/><line x1="3" y1="-3" x2="-3" y2="3" stroke="#C9A84C" stroke-width="1"/></g>
+<text x="225" y="193" font-family="Georgia" font-size="8" fill="#C9A84C" font-weight="bold">Ледовое побоище</text>
+<text x="225" y="203" font-family="Georgia" font-size="8" fill="#C9A84C">5 IV 1242</text>
+<!-- Legend -->
+<rect x="440" y="252" width="235" height="72" rx="2" fill="rgba(0,0,0,.55)" stroke="rgba(201,168,76,.3)" stroke-width=".5"/>
+<text x="557" y="268" text-anchor="middle" font-family="Georgia" font-size="9" fill="#C9A84C" letter-spacing="1.5">УСЛОВНЫЕ ОБОЗНАЧЕНИЯ</text>
+<line x1="452" y1="280" x2="472" y2="280" stroke="#943333" stroke-width="1.5" stroke-dasharray="4 2"/><text x="478" y="283" font-family="Georgia" font-size="8.5" fill="#999">Шведское вторжение</text>
+<line x1="452" y1="293" x2="472" y2="293" stroke="#334499" stroke-width="1.5" stroke-dasharray="4 2"/><text x="478" y="296" font-family="Georgia" font-size="8.5" fill="#999">Крестоносная экспансия</text>
+<line x1="452" y1="306" x2="472" y2="306" stroke="#996633" stroke-width="1.5" stroke-dasharray="4 2"/><text x="478" y="309" font-family="Georgia" font-size="8.5" fill="#999">Монгольское иго</text>
+<!-- Compass rose -->
+<g transform="translate(640,55)"><circle r="18" fill="none" stroke="rgba(201,168,76,.3)" stroke-width=".5"/><line x1="0" y1="-15" x2="0" y2="15" stroke="rgba(201,168,76,.4)" stroke-width=".5"/><line x1="-15" y1="0" x2="15" y2="0" stroke="rgba(201,168,76,.4)" stroke-width=".5"/><text x="0" y="-18" text-anchor="middle" font-family="Georgia" font-size="7" fill="#C9A84C">С</text><text x="0" y="25" text-anchor="middle" font-family="Georgia" font-size="7" fill="#8B6914">Ю</text><text x="-20" y="3" text-anchor="middle" font-family="Georgia" font-size="7" fill="#8B6914">З</text><text x="20" y="3" text-anchor="middle" font-family="Georgia" font-size="7" fill="#8B6914">В</text></g>
+<text x="350" y="334" text-anchor="middle" font-family="Georgia" font-size="9" fill="#5C4A2A" font-style="italic">Историческая карта: угрозы Руси в 1237–1242 гг. Авторская реконструкция по летописным данным</text>
+</svg>
+<div class="figcap">Историческая карта-схема: тройная угроза Руси в XIII веке — монгольское нашествие с востока, шведское вторжение и крестоносная экспансия Ливонского ордена с запада. Звёздами отмечены места битв Александра Невского.</div>
+</div>
+<div class="side-panel-r">
+<div class="gb" style="margin:0;"><div class="glbl">Текст экскурсовода</div>
+<p>Добро пожаловать, дорогие друзья, в первый зал нашего виртуального музея! Представьте себе тринадцатый век — эпоху, когда Русская земля оказалась зажата между двумя грозными силами. С востока уже прокатилась монгольская буря: в 1237–1238 годах орды Батыя опустошили Владимирское и Рязанское княжества. Из четырнадцати крупных городов Северо-Восточной Руси девять были сожжены дотла.</p>
+<p>Но и с запада надвигались тучи. Шведские рыцари, ливонские крестоносцы видели в ослабленных русских землях лёгкую добычу. В этот роковой момент на новгородском престоле находился молодой князь Александр Ярославич — ему шёл всего девятнадцатый год. Родился он около 1221 года в Переславле-Залесском, в семье князя Ярослава Всеволодовича. Взгляните на карту: Новгород не был разорён монголами — болота и весенняя распутица остановили Батыя. Но теперь угроза шла с противоположной стороны.</p>
+</div>
+<div class="side-box">
+<h4>Ключевые даты</h4>
+<ul>
+<li><strong style="color:var(--gl);">ок. 1221</strong> — рождение в Переславле-Залесском</li>
+<li><strong style="color:var(--gl);">1236</strong> — Александр посажен на новгородский стол</li>
+<li><strong style="color:var(--gl);">1237–1238</strong> — нашествие Батыя на Северо-Восточную Русь</li>
+<li><strong style="color:var(--gl);">1240</strong> — шведское вторжение в устье Невы</li>
+</ul>
+</div>
+</div>
+<div class="cit">
+<p>Сей-то Александр родися от отца милостиваго и человеколюбиваго, паче же и кроткаго, князя великаго Ярослава, и от матери Феодосии. Возрастом бе велик зело, красота же лица его видели яко Иосифа Прекраснаго, сила же его бяше часть от силы Самсоновы.</p>
+<span class="cit-src">— Житие Александра Невского, конец XIII в. (Памятники литературы Древней Руси. XIII в. М., 1981. С. 426)</span>
+</div>
+<div class="cv"><p class="cvlbl">Вывод по подтеме</p><p>К 1240 году молодой Александр оказался единственным щитом на пути западной экспансии. Двойная угроза с востока и запада определила уникальность его исторической роли.</p></div>
+<div class="carousel" id="c-t1-1">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/nevsky-portrait.jpg" alt="Портрет Александра Невского. В. Боровиковский, нач. XIX в. Государственный Эрмитаж" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Портрет Александра Невского. В. Боровиковский, нач. XIX в. Государственный Эрмитаж</div></div><div class="carousel-slide"><img src="images/nevsky-icon.jpg" alt="Александр Невский. Икона XIX в. Государственная Третьяковская галерея" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Александр Невский. Икона XIX в. Государственная Третьяковская галерея</div></div><div class="carousel-slide"><img src="images/nevsky-in-horde.jpg" alt="Александр Невский в Орде. Генрих Семирадский, 1876 г." loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Александр Невский в Орде. Генрих Семирадский, 1876 г.</div></div><div class="carousel-slide"><img src="images/golden-horde-map.jpg" alt="Карта Монгольской империи в середине XIII века — в момент угрозы с востока" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Карта Монгольской империи в середине XIII века — в момент угрозы с востока</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+
+<div class="trl">· · ·</div>
+
+<div class="sub">
+<span class="sublbl">Подтема 2</span>
+<h3>Невская битва, 15 июля 1240 года</h3>
+<div class="fig">
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern id="riverH" width="8" height="4" patternUnits="userSpaceOnUse"><path d="M0 2 Q2 0 4 2 Q6 4 8 2" stroke="#1A3A5A" stroke-width=".4" fill="none"/></pattern>
+<pattern id="forest" width="12" height="16" patternUnits="userSpaceOnUse"><path d="M6 2 L3 10 L9 10Z" fill="#0D1A0D" opacity=".7"/><rect x="5" y="10" width="2" height="4" fill="#0D1A0D" opacity=".5"/></pattern>
+</defs>
+<rect width="700" height="320" fill="#080604"/>
+<!-- River Neva -->
+<path d="M0 200 Q80 190 180 195 Q280 205 400 192 Q520 182 700 195 L700 260 Q520 250 400 255 Q280 260 180 255 Q80 250 0 255Z" fill="url(#riverH)" opacity=".8" stroke="#1A3A5A" stroke-width=".5"/>
+<text x="350" y="230" text-anchor="middle" font-family="Georgia" font-size="10" fill="#3A6A9A" font-style="italic" letter-spacing="4">р. Нева</text>
+<!-- Izhora river -->
+<path d="M290 195 Q295 170 305 140 Q315 120 330 100" stroke="#1A3A5A" stroke-width="3" fill="none" opacity=".5"/>
+<text x="340" y="105" font-family="Georgia" font-size="8" fill="#3A6A9A" font-style="italic">р. Ижора</text>
+<!-- Banks / ground -->
+<path d="M0 192 Q180 182 400 188 Q600 178 700 188 L700 200 Q550 195 400 198 Q250 200 100 198 L0 200Z" fill="#101A08" opacity=".8"/>
+<!-- Forest left -->
+<rect x="0" y="100" width="120" height="90" fill="url(#forest)" opacity=".8"/>
+<text x="60" y="158" text-anchor="middle" font-family="Georgia" font-size="7" fill="#2A4A1A" font-style="italic">лесъ</text>
+<!-- Swedish camp (right, on river) -->
+<rect x="430" y="140" width="130" height="50" rx="2" fill="none" stroke="#943333" stroke-width="1" stroke-dasharray="3 2"/>
+<text x="495" y="155" text-anchor="middle" font-family="Georgia" font-size="9" fill="#BB5555" font-weight="bold">ШВЕДСКИЙ ЛАГЕРЬ</text>
+<text x="495" y="167" text-anchor="middle" font-family="Georgia" font-size="8" fill="#943333">ярл Биргер</text>
+<text x="495" y="178" text-anchor="middle" font-family="Georgia" font-size="8" fill="#943333">~5 000 воинов</text>
+<!-- Ships -->
+<g stroke="#5C3A10" stroke-width=".8" fill="none" opacity=".6">
+<path d="M450 195 Q465 188 480 195 Q475 200 455 200Z"/><line x1="465" y1="180" x2="465" y2="195"/>
+<path d="M500 198 Q515 191 530 198 Q525 203 505 203Z"/><line x1="515" y1="183" x2="515" y2="198"/>
+<path d="M545 195 Q558 188 572 195 Q567 200 550 200Z"/><line x1="558" y1="180" x2="558" y2="195"/>
+</g>
+<!-- Russian forces — advancing -->
+<rect x="140" y="132" width="130" height="42" rx="2" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
+<text x="205" y="150" text-anchor="middle" font-family="Georgia" font-size="9" fill="#C9A84C" font-weight="bold">ДРУЖИНА АЛЕКСАНДРА</text>
+<text x="205" y="162" text-anchor="middle" font-family="Georgia" font-size="8" fill="#C9A84C">~1 300–1 500 воинов</text>
+<!-- Attack arrows -->
+<defs><marker id="atk" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#C9A84C"/></marker></defs>
+<path d="M270 148 Q340 145 425 150" stroke="#C9A84C" stroke-width="2" fill="none" marker-end="url(#atk)"/>
+<path d="M270 158 Q340 165 425 168" stroke="#C9A84C" stroke-width="1.5" fill="none" marker-end="url(#atk)" opacity=".7"/>
+<text x="345" y="138" text-anchor="middle" font-family="Georgia" font-size="8" fill="#C9A84C" font-style="italic">внезапный удар на рассвете →</text>
+<!-- Timestamp -->
+<rect x="20" y="20" width="170" height="55" rx="2" fill="rgba(0,0,0,.6)" stroke="rgba(201,168,76,.3)" stroke-width=".5"/>
+<text x="105" y="38" text-anchor="middle" font-family="Georgia" font-size="11" fill="#C9A84C" font-weight="bold">НЕВСКАЯ БИТВА</text>
+<text x="105" y="52" text-anchor="middle" font-family="Georgia" font-size="10" fill="#E8D08A">15 июля 1240 г.</text>
+<text x="105" y="65" text-anchor="middle" font-family="Georgia" font-size="8" fill="#8B6914">устье р. Ижоры</text>
+<!-- Result box -->
+<rect x="20" y="255" width="220" height="52" rx="2" fill="rgba(0,0,0,.5)" stroke="rgba(201,168,76,.25)" stroke-width=".5"/>
+<text x="130" y="271" text-anchor="middle" font-family="Georgia" font-size="9" fill="#C9A84C" font-weight="bold">ИТОГ: полная победа русских</text>
+<text x="130" y="284" text-anchor="middle" font-family="Georgia" font-size="8" fill="#A08B5C">Потери новгородцев: ~20 человек</text>
+<text x="130" y="296" text-anchor="middle" font-family="Georgia" font-size="8" fill="#A08B5C">Потери шведов: «множество» (Летопись)</text>
+<text x="350" y="312" text-anchor="middle" font-family="Georgia" font-size="9" fill="#5C4A2A" font-style="italic">Тактическая схема Невской битвы. Реконструкция по Новгородской первой летописи и Житию</text>
+</svg>
+<div class="figcap">Тактическая схема Невской битвы (15 июля 1240 г.). Стремительный марш дружины Александра и внезапный удар по шведскому лагерю при впадении Ижоры в Неву. Реконструкция по данным Новгородской первой летописи и Жития Александра Невского.</div>
+</div>
+<div class="gb"><div class="glbl">Текст экскурсовода</div>
+<p>Летом 1240 года шведский ярл Биргер во главе крупного войска вошёл на кораблях в устье Невы. По свидетельству «Жития Александра Невского», шведы намеревались «взять Ладогу, а также Новгород и всю область новгородскую». Они разбили лагерь при впадении реки Ижоры в Неву.</p>
+<p>Александр не стал ждать подкреплений из Владимира. С небольшой дружиной он совершил стремительный марш — и на рассвете 15 июля 1240 года нанёс внезапный удар. Летопись сохранила имена шести героев: Гаврило Олексич ворвался на коне на шведский корабль по сходням; Збыслав Якунович «бился одним топором, не имея страха в душе». Битва завершилась полной победой. За неё молодой князь получил прозвание — Невский.</p>
+</div>
+<div class="cit">
+<p>И бысть сеча велика над Римляны, и изби их множество бесчисленно, и самому королю возложи печать на лице острымь своимь копиемь.</p>
+<span class="cit-src">— Житие Александра Невского (о ранении ярла Биргера). Памятники литературы Древней Руси. XIII в. М., 1981. С. 430.</span>
+</div>
+<div class="stat-bar">
+<div class="stat-bar-item"><span class="sb-num">15.VII.1240</span><span class="sb-lbl">Дата битвы</span></div>
+<div class="stat-bar-item"><span class="sb-num">~1 300</span><span class="sb-lbl">Русская дружина</span></div>
+<div class="stat-bar-item"><span class="sb-num">~5 000</span><span class="sb-lbl">Шведское войско</span></div>
+<div class="stat-bar-item"><span class="sb-num">~20</span><span class="sb-lbl">Потери новгородцев</span></div>
+<div class="stat-bar-item"><span class="sb-num">6</span><span class="sb-lbl">Героев в Житии</span></div>
+</div>
+<div class="cv"><p class="cvlbl">Вывод по подтеме</p><p>Невская битва показала полководческий талант Александра: скорость решений, фактор внезапности и личная храбрость обеспечили победу малыми силами.</p></div>
+<div class="carousel" id="c-t1-2">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/neva-battle.jpg" alt="Невская битва. Миниатюра из Лицевого летописного свода, XVI в." loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Невская битва. Миниатюра из Лицевого летописного свода, XVI в.</div></div><div class="carousel-slide"><img src="images/mongol-invasion.jpg" alt="Александр Невский в Невской битве. Картина XIX века" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Александр Невский в Невской битве. Картина XIX века</div></div><div class="carousel-slide"><img src="images/neva-monument.jpg" alt="Памятник Александру Невскому. Россия" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Памятник Александру Невскому. Россия</div></div><div class="carousel-slide"><img src="images/swedish-ship.jpg" alt="Скандинавский боевой корабль (дракар) — на таких пришли шведы в 1240 году. Реконструкция" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Скандинавский боевой корабль (дракар) — на таких пришли шведы в 1240 году. Реконструкция</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+
+<div class="trl">· · ·</div>
+
+<div class="sub">
+<span class="sublbl">Подтема 3</span>
+<h3>Ледовое побоище, 5 апреля 1242 года</h3>
+<div class="fig">
+<svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern id="ice" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M0 10 Q5 8 10 10 Q15 12 20 10" stroke="#2A4A6A" stroke-width=".3" fill="none"/></pattern>
+<marker id="gA" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#C9A84C"/></marker>
+<marker id="grA" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#6A6A8A"/></marker>
+</defs>
+<rect width="700" height="340" fill="#070A0F"/>
+<!-- Ice surface -->
+<ellipse cx="350" cy="200" rx="320" ry="110" fill="#0C1520" stroke="#1A3050" stroke-width=".5"/>
+<ellipse cx="350" cy="200" rx="320" ry="110" fill="url(#ice)" opacity=".6"/>
+<!-- Ice cracks (danger zone) -->
+<g stroke="#2A5A8A" stroke-width=".6" fill="none" opacity=".5">
+<path d="M400 170 Q420 180 418 200 Q425 220 415 235"/>
+<path d="M430 165 Q450 175 445 195 Q450 210 440 225 Q455 240 460 255"/>
+<path d="M460 180 Q470 195 468 215"/>
+</g>
+<text x="445" y="260" text-anchor="middle" font-family="Georgia" font-size="8" fill="#2A5A8A" font-style="italic">зона проломленного льда</text>
+<ellipse cx="445" cy="240" rx="35" ry="12" fill="none" stroke="#2A5A8A" stroke-width=".6" stroke-dasharray="2 2"/>
+<!-- GERMAN WEDGE -->
+<rect x="302" y="22" width="96" height="38" rx="2" fill="rgba(0,0,0,.6)" stroke="#6A6A8A" stroke-width=".5"/>
+<text x="350" y="38" text-anchor="middle" font-family="Georgia" font-size="9" fill="#9A9ABB" font-weight="bold">ЛИВОНСКИЙ ОРДЕН</text>
+<text x="350" y="50" text-anchor="middle" font-family="Georgia" font-size="8" fill="#6A6A8A">строй «свинья» (клин)</text>
+<!-- Wedge formation (triangle of blocks) -->
+<g fill="#2A2A3A" stroke="#6A6A8A" stroke-width=".8">
+<rect x="335" y="65" width="30" height="22" rx="1"/><text x="350" y="80" text-anchor="middle" font-family="Georgia" font-size="7" fill="#AAA">⚔</text>
+<rect x="315" y="91" width="28" height="20" rx="1"/><rect x="357" y="91" width="28" height="20" rx="1"/>
+<rect x="295" y="115" width="26" height="18" rx="1"/><rect x="335" y="115" width="30" height="18" rx="1"/><rect x="379" y="115" width="26" height="18" rx="1"/>
+<rect x="278" y="137" width="24" height="16" rx="1"/><rect x="316" y="137" width="26" height="16" rx="1"/><rect x="356" y="137" width="26" height="16" rx="1"/><rect x="396" y="137" width="24" height="16" rx="1"/>
+</g>
+<!-- Arrow down -->
+<line x1="350" y1="153" x2="350" y2="172" stroke="#6A6A8A" stroke-width="1.5" marker-end="url(#grA)"/>
+<!-- RUSSIAN CENTER -->
+<rect x="290" y="176" width="120" height="32" rx="2" fill="none" stroke="#6A9A50" stroke-width="1.5"/>
+<rect x="292" y="178" width="116" height="28" rx="1" fill="#0D1A08" opacity=".6"/>
+<text x="350" y="196" text-anchor="middle" font-family="Georgia" font-size="9" fill="#8ABB66" font-weight="bold">РУССКИЙ ЦЕНТР</text>
+<!-- FLANKS — cavalry -->
+<rect x="70" y="155" width="115" height="32" rx="2" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
+<rect x="72" y="157" width="111" height="28" rx="1" fill="#1A1508" opacity=".6"/>
+<text x="127" y="172" text-anchor="middle" font-family="Georgia" font-size="8" fill="#C9A84C" font-weight="bold">ЗАСАДНЫЙ ПОЛК</text>
+<text x="127" y="182" text-anchor="middle" font-family="Georgia" font-size="7" fill="#8B6914">левый фланг</text>
+<rect x="515" y="155" width="115" height="32" rx="2" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
+<rect x="517" y="157" width="111" height="28" rx="1" fill="#1A1508" opacity=".6"/>
+<text x="572" y="172" text-anchor="middle" font-family="Georgia" font-size="8" fill="#C9A84C" font-weight="bold">ЗАСАДНЫЙ ПОЛК</text>
+<text x="572" y="182" text-anchor="middle" font-family="Georgia" font-size="7" fill="#8B6914">правый фланг</text>
+<!-- Flank attack arrows -->
+<path d="M185 171 Q230 175 287 184" stroke="#C9A84C" stroke-width="2" fill="none" marker-end="url(#gA)"/>
+<path d="M515 171 Q470 175 413 184" stroke="#C9A84C" stroke-width="2" fill="none" marker-end="url(#gA)"/>
+<!-- Encirclement -->
+<path d="M280 200 Q260 220 285 240 Q310 250 340 248" stroke="#C9A84C" stroke-width="1" fill="none" stroke-dasharray="3 2" opacity=".5"/>
+<path d="M420 200 Q440 220 415 240 Q390 250 360 248" stroke="#C9A84C" stroke-width="1" fill="none" stroke-dasharray="3 2" opacity=".5"/>
+<!-- Title box -->
+<rect x="15" y="15" width="195" height="58" rx="2" fill="rgba(0,0,0,.65)" stroke="rgba(201,168,76,.3)" stroke-width=".5"/>
+<text x="112" y="34" text-anchor="middle" font-family="Georgia" font-size="11" fill="#C9A84C" font-weight="bold">ЛЕДОВОЕ ПОБОИЩЕ</text>
+<text x="112" y="48" text-anchor="middle" font-family="Georgia" font-size="10" fill="#E8D08A">5 апреля 1242 г.</text>
+<text x="112" y="62" text-anchor="middle" font-family="Georgia" font-size="8" fill="#8B6914">Чудское озеро, у Вороньего камня</text>
+<!-- Result box -->
+<rect x="15" y="265" width="250" height="58" rx="2" fill="rgba(0,0,0,.5)" stroke="rgba(201,168,76,.25)" stroke-width=".5"/>
+<text x="140" y="282" text-anchor="middle" font-family="Georgia" font-size="9" fill="#C9A84C" font-weight="bold">ИТОГ: разгром Ливонского ордена</text>
+<text x="140" y="295" text-anchor="middle" font-family="Georgia" font-size="8" fill="#A08B5C">Убито 400–500 рыцарей, 50 пленных</text>
+<text x="140" y="308" text-anchor="middle" font-family="Georgia" font-size="8" fill="#A08B5C">Мир 1242 г. — Орден отказался от земель</text>
+<text x="350" y="335" text-anchor="middle" font-family="Georgia" font-size="9" fill="#5C4A2A" font-style="italic">Тактическая схема Ледового побоища. Реконструкция по А.Н. Кирпичникову</text>
+</svg>
+<div class="figcap">Тактическая схема Ледового побоища (5 апреля 1242 г.). Рыцарский клин «свинья» вязнет в русском центре — засадные полки наносят фланговые удары. Зона проломленного льда на восточном фланге. Реконструкция по исследованиям А.Н. Кирпичникова и данным Ливонской рифмованной хроники.</div>
+</div>
+<div class="gb"><div class="glbl">Текст экскурсовода</div>
+<p>В 1241 году Ливонский орден захватил Псков. Новгород вновь призвал Александра — прежде поссорившись с ним и изгнав из города. Александр быстро освободил Псков и вывел армию на лёд Чудского озера. Рыцари атаковали строем «свинья» — клином закованной в сталь конницы. Но на льду тяжёлые кони вязли, а фланги оказались уязвимы.</p>
+<p>5 апреля 1242 года клин врезался в центр русского войска — и увяз. Засадные полки ударили с флангов. Лёд не выдержал тяжести закованных в железо рыцарей. Орден потерял 400–500 рыцарей убитыми, 50 взяты в плен. В том же году заключён мир.</p>
+</div>
+<div class="cit">
+<p>Братья-рыцари достаточно упорно сопротивлялись, но их там одолели. Часть дорпатцев вышла из сражения, это было их спасение, они вынуждены были отступить. Там было убито двадцать братьев-рыцарей, а шестеро были взяты в плен.</p>
+<span class="cit-src">— Ливонская рифмованная хроника, ок. 1290 г. (Пер. В.И. Матузовой. Крестоносцы и Русь. М., 2002. С. 234)</span>
+</div>
+<div class="stat-bar">
+<div class="stat-bar-item"><span class="sb-num">5.IV.1242</span><span class="sb-lbl">Дата битвы</span></div>
+<div class="stat-bar-item"><span class="sb-num">400–500</span><span class="sb-lbl">Рыцарей убито (рус.)</span></div>
+<div class="stat-bar-item"><span class="sb-num">20</span><span class="sb-lbl">Братьев-рыцарей (лив.)</span></div>
+<div class="stat-bar-item"><span class="sb-num">50</span><span class="sb-lbl">Пленных</span></div>
+<div class="stat-bar-item"><span class="sb-num">1242</span><span class="sb-lbl">Мирный договор</span></div>
+</div>
+<div class="cv"><p class="cvlbl">Вывод по подтеме</p><p>Ледовое побоище — вершина стратегического мышления Александра: выбор местности, знание тактики противника и засадные полки остановили немецкую экспансию на десятилетия.</p></div>
+<div class="carousel" id="c-t1-3">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/eisenstein-film.jpg" alt="Кадр из фильма «Александр Невский» С. Эйзенштейна (1938): сцена Ледового побоища" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Кадр из фильма «Александр Невский» С. Эйзенштейна (1938): сцена Ледового побоища</div></div><div class="carousel-slide"><img src="images/ice-battle.jpg" alt="Ледовое побоище. Миниатюра из Лицевого летописного свода XVI в." loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Ледовое побоище. Миниатюра из Лицевого летописного свода XVI в.</div></div><div class="carousel-slide"><img src="images/teutonic-knight.jpg" alt="Доспехи тевтонского рыцаря XIII–XIV вв. Реконструкция для исторического музея" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Доспехи тевтонского рыцаря XIII–XIV вв. Реконструкция для исторического музея</div></div><div class="carousel-slide"><img src="images/lake-peipus.jpg" alt="Чудское озеро — место Ледового побоища 5 апреля 1242 года" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Чудское озеро — место Ледового побоища 5 апреля 1242 года</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+<div class="trl">· · ·</div>
+<div class="sub">
+<span class="sublbl">Подтема 4</span>
+<h3>Значение западных побед</h3>
+<div class="gb"><div class="glbl">Текст экскурсовода</div>
+<p>Историки спорят о масштабе западной угрозы. Немецкий историк Дитмар Дальманн считает её менее опасной, чем монгольскую. Однако Игорь Данилевский и Александр Горский указывают: монголы собирали дань, но не меняли веры; ливонцы несли католическую церковь, что грозило уничтожением православной идентичности. Победы Александра сохранили Новгород и православие на северо-западных рубежах.</p>
+</div>
+<div class="cit">
+<p>Александр Невский, заключив союз с Ордой, тем самым выбрал восток против запада. Это определило всю дальнейшую историю России. Западная угроза была не столько военной, сколько цивилизационной: речь шла о смене веры, культуры, идентичности.</p>
+<span class="cit-src">— Горский А.А. Александр Невский. М.: Молодая гвардия, 2016. С. 178.</span>
+</div>
+<div class="cv"><p class="cvlbl">Общий вывод по экскурсии</p><p>Военные победы 1240–1242 гг. остановили западную экспансию, сохранили православную идентичность севера Руси и заложили основу для дальнейшего собирания русских земель.</p></div>
+<div class="carousel" id="c-t1-4">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/nevsky-icon.jpg" alt="Александр Невский — икона святого благоверного князя. XIX в." loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Александр Невский — икона святого благоверного князя. XIX в.</div></div><div class="carousel-slide"><img src="images/nevsky-statue.jpg" alt="Памятник Александру Невскому во Пскове — у стен освобождённого им города" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Памятник Александру Невскому во Пскове — у стен освобождённого им города</div></div><div class="carousel-slide"><img src="images/map-rus-13c.jpg" alt="Карта русских земель в XIII веке — в эпоху монгольского ига" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Карта русских земель в XIII веке — в эпоху монгольского ига</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+<div class="tb">
+<p class="tbt">⚔ Задания по экскурсии</p>
+<div class="ti"><div class="tn">1</div><p class="tt2"><strong>Хронологическая таблица:</strong> «Дата — Событие — Значение» (не менее 5 событий).</p></div>
+<div class="ti"><div class="tn">2</div><p class="tt2"><strong>Анализ тактики:</strong> Сравните тактику Невской битвы и Ледового побоища: сходства и различия (4–6 предложений).</p></div>
+<div class="ti"><div class="tn">3</div><p class="tt2"><strong>Работа с источником:</strong> Прочитайте приведённые цитаты из Жития и Ливонской хроники. Чем отличаются оценки потерь? Какие причины расхождений вы видите?</p></div>
+<div class="ti"><div class="tn">4</div><p class="tt2"><strong>Творческое задание:</strong> Напишите летописную запись (7–10 предложений) об одном из сражений от лица очевидца-новгородца.</p></div>
+</div>
+<div class="src"><p class="srct">Использованные источники</p>
+<ol class="srcl">
+<li>Житие Александра Невского // Памятники литературы Древней Руси. XIII в. — М., 1981. — С. 426–439.</li>
+<li>Новгородская первая летопись / Под ред. А.Н. Насонова. — М.; Л., 1950.</li>
+<li>Горский А.А. Александр Невский. — М.: Молодая гвардия, 2016. — 239 с.</li>
+<li>Данилевский И.Н. Ледовое побоище: смена образа // Отечественные записки. — 2004. — № 5.</li>
+<li>Матузова В.И., Назарова Е.Л. Крестоносцы и Русь. — М.: Индрик, 2002.</li>
+<li>Кирпичников А.Н. Две великие битвы Александра Невского // Александр Невский и история России. — Новгород, 1996.</li>
+<li>Ливонская рифмованная хроника / Пер. с нем. — М., 1974.</li>
+</ol></div>
+</div>
+<!-- ЭКСКУРСИЯ 2 -->
+<div class="exc" id="tour-2">
+<div class="exc-hd">
+<div class="exc-num">II</div>
+<p class="sl lt">Экскурсия вторая</p>
+<h2 class="exc-t">«Дипломат на краю пропасти»: Александр Невский и Золотая Орда</h2>
+<p class="exc-g"><strong>Цель:</strong> раскрыть дипломатию Александра в отношениях с Золотой Ордой, объяснить логику его выбора — подчинение Орде ценой сохранения народа — и показать последствия.</p>
+</div>
+
+<div class="sub">
+<span class="sublbl">Подтема 1</span>
+<h3>Русь под игом: реальность 1240–1250-х годов</h3>
+<div class="fig">
+<svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+<defs><pattern id="hatch2" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#1A1005" stroke-width=".5"/></pattern>
+<marker id="mA" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#996633"/></marker></defs>
+<rect width="700" height="300" fill="#0A0704"/>
+<rect width="700" height="300" fill="url(#hatch2)" opacity=".2"/>
+<!-- Rus lands outline -->
+<path d="M110 45 Q200 35 290 52 Q380 38 450 60 Q510 48 560 68 Q585 95 580 155 Q575 210 548 240 Q500 268 450 258 Q380 275 305 268 Q230 278 175 255 Q125 230 110 185 Q98 135 110 45Z" fill="#0D1A08" opacity=".5" stroke="#2A4A1A" stroke-width=".8"/>
+<!-- Burned cities with crosses -->
+<g fill="#943333" font-family="Georgia">
+<g transform="translate(325,138)"><line x1="-5" y1="-5" x2="5" y2="5" stroke="#943333" stroke-width="1.5"/><line x1="5" y1="-5" x2="-5" y2="5" stroke="#943333" stroke-width="1.5"/></g>
+<text x="325" y="155" text-anchor="middle" font-size="8" fill="#BB5555">Рязань 1237</text>
+<g transform="translate(400,120)"><line x1="-5" y1="-5" x2="5" y2="5" stroke="#943333" stroke-width="1.5"/><line x1="5" y1="-5" x2="-5" y2="5" stroke="#943333" stroke-width="1.5"/></g>
+<text x="400" y="137" text-anchor="middle" font-size="8" fill="#BB5555">Владимир 1238</text>
+<g transform="translate(360,115)"><line x1="-4" y1="-4" x2="4" y2="4" stroke="#943333" stroke-width="1.2"/><line x1="4" y1="-4" x2="-4" y2="4" stroke="#943333" stroke-width="1.2"/></g>
+<text x="360" y="130" text-anchor="middle" font-size="7" fill="#943333">Москва</text>
+<g transform="translate(280,195)"><line x1="-5" y1="-5" x2="5" y2="5" stroke="#943333" stroke-width="1.5"/><line x1="5" y1="-5" x2="-5" y2="5" stroke="#943333" stroke-width="1.5"/></g>
+<text x="280" y="212" text-anchor="middle" font-size="8" fill="#BB5555">Киев 1240</text>
+</g>
+<!-- Novgorod — spared -->
+<circle cx="230" cy="82" r="18" fill="none" stroke="#6A9A50" stroke-width="1.5"/>
+<circle cx="230" cy="82" r="14" fill="#0D1A08" opacity=".5"/>
+<text x="230" y="79" text-anchor="middle" font-family="Georgia" font-size="8" fill="#8ABB66" font-weight="bold">Новгород</text>
+<text x="230" y="90" text-anchor="middle" font-family="Georgia" font-size="7" fill="#6A9A50">не разорён</text>
+<!-- Mongol arrows -->
+<path d="M640 85 Q585 98 530 115" stroke="#996633" stroke-width="2" fill="none" marker-end="url(#mA)" stroke-dasharray="5 3"/>
+<path d="M635 140 Q585 148 545 158" stroke="#996633" stroke-width="1.8" fill="none" marker-end="url(#mA)" stroke-dasharray="5 3"/>
+<path d="M628 195 Q578 192 540 188" stroke="#996633" stroke-width="1.5" fill="none" marker-end="url(#mA)" stroke-dasharray="5 3"/>
+<rect x="590" y="68" width="90" height="38" rx="2" fill="rgba(0,0,0,.6)" stroke="#996633" stroke-width=".5"/>
+<text x="635" y="83" text-anchor="middle" font-family="Georgia" font-size="9" fill="#CC9955" font-weight="bold">НАШЕСТВИЕ</text>
+<text x="635" y="95" text-anchor="middle" font-family="Georgia" font-size="9" fill="#CC9955" font-weight="bold">БАТЫЯ</text>
+<text x="635" y="105" text-anchor="middle" font-family="Georgia" font-size="8" fill="#996633">1237–1241</text>
+<!-- Tribute arrow -->
+<path d="M420 175 Q510 168 590 162" stroke="#C9A84C" stroke-width="1" fill="none" stroke-dasharray="4 3" opacity=".5"/>
+<text x="500" y="158" font-family="Georgia" font-size="8" fill="#C9A84C" font-style="italic">«выход» (дань) →</text>
+<!-- Stats panel -->
+<rect x="15" y="210" width="200" height="72" rx="2" fill="rgba(0,0,0,.6)" stroke="rgba(201,168,76,.3)" stroke-width=".5"/>
+<text x="115" y="227" text-anchor="middle" font-family="Georgia" font-size="9" fill="#C9A84C" letter-spacing="1">МАСШТАБ РАЗОРЕНИЯ</text>
+<text x="25" y="242" font-family="Georgia" font-size="8.5" fill="#BBA87A">▪ 9 из 14 крупных городов сожжены</text>
+<text x="25" y="255" font-family="Georgia" font-size="8.5" fill="#BBA87A">▪ Население сократилось на 30–50%</text>
+<text x="25" y="268" font-family="Georgia" font-size="8.5" fill="#BBA87A">▪ Установлена система баскаков и дани</text>
+<text x="350" y="293" text-anchor="middle" font-family="Georgia" font-size="9" fill="#5C4A2A" font-style="italic">Русь после нашествия Батыя (1237–1241). Реконструкция по летописным источникам</text>
+</svg>
+<div class="figcap">Карта последствий монгольского нашествия на Русь (1237–1241 гг.). Крестами отмечены разорённые города. Новгородская земля (зелёный контур) не подверглась разрушению — что определило особую роль Александра.</div>
+</div>
+<div class="side-panel-r">
+<div class="gb" style="margin:0;"><div class="glbl">Текст экскурсовода</div>
+<p>Дорогие гости, переходим во второй зал. Здесь меньше героики, больше суровой политической прозы. После нашествия Батыя 1237–1241 годов из 14 крупных городов Северо-Восточной Руси девять сожжены дотла. Орда установила жёсткую зависимость: перепись, «выход» — ежегодная дань, баскаки-надзиратели.</p>
+<p>В 1252 году брат Александра — Андрей Ярославич — избрал путь сопротивления, вступив в союз с Даниилом Галицким. Ответ Орды — «Неврюева рать» — прошлась по Владимирской земле огнём и мечом. Андрей бежал в Швецию. Александр сделал другой выбор.</p>
+</div>
+<div class="side-box">
+<h4>Глоссарий</h4>
+<ul>
+<li><strong style="color:var(--gl);">Выход</strong> — ежегодная дань Орде</li>
+<li><strong style="color:var(--gl);">Баскак</strong> — ордынский наместник-контролёр</li>
+<li><strong style="color:var(--gl);">Ярлык</strong> — ханская грамота на княжение</li>
+<li><strong style="color:var(--gl);">Число</strong> — перепись населения для обложения данью</li>
+</ul>
+</div>
+</div>
+<div class="cit">
+<p>Прииде Неврюй и Котья и Олабуга храбрый на землю Суздальскую со многими вои… и рассыпашася по земли… людей бесчисленно поведоша.</p>
+<span class="cit-src">— Лаврентьевская летопись, запись под 1252 г. (ПСРЛ. Т. 1. М., 1997. Стб. 473)</span>
+</div>
+<div class="cv"><p class="cvlbl">Вывод по подтеме</p><p>Реальность монгольского ига не оставляла места для романтического сопротивления: военные силы Руси были многократно слабее ордынских.</p></div>
+<div class="carousel" id="c-t2-1">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/batu-khan.jpg" alt="Батый (Бату-хан) — внук Чингисхана, предводитель нашествия на Русь 1237–1241 гг." loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Батый (Бату-хан) — внук Чингисхана, предводитель нашествия на Русь 1237–1241 гг.</div></div><div class="carousel-slide"><img src="images/mongol-siege.jpg" alt="Взятие монголо-татарами русского города. Миниатюра из летописи XIII в." loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Взятие монголо-татарами русского города. Миниатюра из летописи XIII в.</div></div><div class="carousel-slide"><img src="images/golden-horde-map.jpg" alt="Карта Золотой Орды в XIII–XIV вв. — государства, которому подчинилась Русь" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Карта Золотой Орды в XIII–XIV вв. — государства, которому подчинилась Русь</div></div><div class="carousel-slide"><img src="images/mongol-invasion.jpg" alt="Монгольский воин XIII века. Реконструкция по описаниям Плано Карпини" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Монгольский воин XIII века. Реконструкция по описаниям Плано Карпини</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+<div class="trl">· · ·</div>
+<div class="sub">
+<span class="sublbl">Подтема 2</span>
+<h3>Поездки в Орду и ярлык на великое княжение</h3>
+<div class="gb"><div class="glbl">Текст экскурсовода</div>
+<p>Первая поездка Александра в Орду состоялась в 1247–1249 годах — к хану Гуюку в далёкий Каракорум. Путь туда и обратно занял около двух лет. В 1252 году он получил ярлык на великое Владимирское княжение — важнейший титул на Руси. В этой роли ему пришлось содействовать монгольской переписи населения (1257–1259) и подавлять антиордынские выступления в Новгороде.</p>
+</div>
+<div class="cit">
+<p>Александр же князь великии, ревнуя правде, не даяше в обиду людей своих поганымъ; елико можаше, сам ездя во Орду, и отмаливая людей от беды.</p>
+<span class="cit-src">— Житие Александра Невского (пространная редакция). Памятники литературы Древней Руси. XIII в. М., 1981. С. 436.</span>
+</div>
+<div class="stat-bar">
+<div class="stat-bar-item"><span class="sb-num">1247–1249</span><span class="sb-lbl">Поездка в Каракорум</span></div>
+<div class="stat-bar-item"><span class="sb-num">1252</span><span class="sb-lbl">Ярлык на великое княжение</span></div>
+<div class="stat-bar-item"><span class="sb-num">1257–1259</span><span class="sb-lbl">Перепись в Новгороде</span></div>
+<div class="stat-bar-item"><span class="sb-num">1262</span><span class="sb-lbl">Восстание против бесерменов</span></div>
+<div class="stat-bar-item"><span class="sb-num">14.XI.1263</span><span class="sb-lbl">Смерть в Городце</span></div>
+</div>
+<div class="cv"><p class="cvlbl">Вывод по подтеме</p><p>Ярлыки стали инструментом ордынской политики — но и инструментом самого Александра для централизации власти и защиты народа.</p></div>
+<div class="carousel" id="c-t2-2">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/nevsky-in-horde.jpg" alt="Александр Невский в Орде. Г. Семирадский, 1876. Русский музей, Санкт-Петербург" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Александр Невский в Орде. Г. Семирадский, 1876. Русский музей, Санкт-Петербург</div></div><div class="carousel-slide"><img src="images/golden-horde-map.jpg" alt="Монгольская империя и пути дипломатических миссий в Каракорум" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Монгольская империя и пути дипломатических миссий в Каракорум</div></div><div class="carousel-slide"><img src="images/mongol-camp.jpg" alt="Монгольский ханский стан. Дипломатам приходилось проходить сложный церемониал приёма" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Монгольский ханский стан. Дипломатам приходилось проходить сложный церемониал приёма</div></div><div class="carousel-slide"><img src="images/nevsky-in-horde.jpg" alt="Хан Берке — к нему Александр ездил в 1262–1263 гг. с просьбой о прощении восставших" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Хан Берке — к нему Александр ездил в 1262–1263 гг. с просьбой о прощении восставших</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+<div class="trl">· · ·</div>
+<div class="sub">
+<span class="sublbl">Подтема 3</span>
+<h3>Восстание 1262 года и последняя поездка</h3>
+<div class="gb"><div class="glbl">Текст экскурсовода</div>
+<p>В 1262 году по русским городам прокатилась волна восстаний против «бесерменов» — откупщиков ордынской дани. Ростов, Суздаль, Ярославль — везде изгнаны или убиты ордынские сборщики. Александр немедленно отправился к хану Берке и добился прощения восстания. Но на обратном пути осенью 1263 года он тяжело заболел. 14 ноября 1263 года в Городце на Волге принял монашеский постриг с именем Алексий — и скончался.</p>
+</div>
+<div class="cit">
+<p>Чада моя, разумейте, яко уже зашло солнце земли Суздальской!</p>
+<span class="cit-src">— Слова митрополита Кирилла по получении вести о смерти Александра. Житие Александра Невского. М., 1981. С. 438.</span>
+</div>
+<div class="cv"><p class="cvlbl">Вывод по подтеме</p><p>Последняя поездка — акт самопожертвования: Александр буквально отдал жизнь ради спасения народа от карательной экспедиции.</p></div>
+<div class="carousel" id="c-t2-3">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/gorodets.jpg" alt="Городец на Волге — место, где 14 ноября 1263 г. скончался Александр Невский" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Городец на Волге — место, где 14 ноября 1263 г. скончался Александр Невский</div></div><div class="carousel-slide"><img src="images/nevsky-icon.jpg" alt="Александр Невский в монашеском облачении (иконография с именем Алексий)" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Александр Невский в монашеском облачении (иконография с именем Алексий)</div></div><div class="carousel-slide"><img src="images/neva-battle.jpg" alt="Летописная миниатюра XIII в. — эпоха жертвенного служения Александра народу" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Летописная миниатюра XIII в. — эпоха жертвенного служения Александра народу</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+<div class="trl">· · ·</div>
+<div class="sub">
+<span class="sublbl">Подтема 4</span>
+<h3>Оценки дипломатии Александра в историографии</h3>
+<div class="gb"><div class="glbl">Текст экскурсовода</div>
+<p>Джон Феннел («Кризис средневековой Руси», 1983) утверждал, что Александр содействовал укреплению ордынского контроля ради собственной власти. Игорь Данилевский задавался вопросом: не преувеличена ли западная угроза? Сторонники Александра — Горский, Янин — возражают: альтернатива его политике — не свобода, а уничтожение. Его выбор сохранил структуры русской власти и православную церковь.</p>
+</div>
+<div class="cit">
+<p>Александр сделал выбор в пользу подчинения монголам, поскольку они были далеко и требовали лишь покорности и налогов, тогда как немцы, шведы и литовцы были рядом и стремились к территориальным захватам и смене веры.</p>
+<span class="cit-src">— Вернадский Г.В. Монголы и Русь. Тверь; М., 1997. С. 155.</span>
+</div>
+<div class="cv"><p class="cvlbl">Общий вывод по экскурсии</p><p>Дипломатия Александра — политика жертвенного реализма. Эта традиция привела к освобождению от ига в 1480 году.</p></div>
+<div class="carousel" id="c-t2-4">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/nevsky-statue.jpg" alt="Памятник Александру Невскому — герою, чья дипломатия спорна до сих пор" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Памятник Александру Невскому — герою, чья дипломатия спорна до сих пор</div></div><div class="carousel-slide"><img src="images/nevsky-portrait.jpg" alt="Образ Александра Невского глазами историографии XIX в. (Боровиковский, нач. XIX в.)" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Образ Александра Невского глазами историографии XIX в. (Боровиковский, нач. XIX в.)</div></div><div class="carousel-slide"><img src="images/nevsky-in-horde.jpg" alt="Семирадский «Александр Невский в Орде» — ключевой образ для споров историков" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Семирадский «Александр Невский в Орде» — ключевой образ для споров историков</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+<div class="tb">
+<p class="tbt">⚖ Задания по экскурсии</p>
+<div class="ti"><div class="tn">1</div><p class="tt2"><strong>Работа с понятиями:</strong> Объясните «ярлык», «баскак», «выход», «Неврюева рать». Словарик 4–5 понятий.</p></div>
+<div class="ti"><div class="tn">2</div><p class="tt2"><strong>Сравнительная таблица:</strong> Политика Александра vs Андрея по отношению к Орде: «Метод — Последствия — Оценка».</p></div>
+<div class="ti"><div class="tn">3</div><p class="tt2"><strong>Эссе:</strong> «Герой или коллаборационист?» — 10–15 предложений, с цитатами из экскурсии.</p></div>
+<div class="ti"><div class="tn">4</div><p class="tt2"><strong>Ролевая игра:</strong> Вы советник Александра в 1252 году. Какую политику посоветуете?</p></div>
+</div>
+<div class="src"><p class="srct">Использованные источники</p>
+<ol class="srcl">
+<li>Горский А.А. Александр Невский. — М.: Молодая гвардия, 2016.</li>
+<li>Феннел Дж. Кризис средневековой Руси. 1200–1304. — М.: Прогресс, 1989.</li>
+<li>Данилевский И.Н. Русские земли глазами современников и потомков. — М., 2001.</li>
+<li>Рашид ад-Дин. Сборник летописей / Пер. Л.А. Хетагурова. — М.; Л., 1952. Т. 1.</li>
+<li>Янин В.Л. Средневековый Новгород. — М.: Наука, 2004.</li>
+<li>Вернадский Г.В. Монголы и Русь. — Тверь; М., 1997.</li>
+<li>Лаврентьевская летопись // ПСРЛ. Т. 1. — М., 1997.</li>
+</ol></div>
+</div>
+<!-- ЭКСКУРСИЯ 3 -->
+<div class="exc" id="tour-3">
+<div class="exc-hd">
+<div class="exc-num">III</div>
+<p class="sl lt">Экскурсия третья</p>
+<h2 class="exc-t">«Святой полководец в веках»: Историческая память об Александре Невском</h2>
+<p class="exc-g"><strong>Цель:</strong> проследить трансформацию образа Александра Невского в русской культуре от канонизации в 1547 году до наших дней; понять механизмы создания исторической памяти.</p>
+</div>
+
+<div class="sub">
+<span class="sublbl">Подтема 1</span>
+<h3>Канонизация и почитание в XIV–XVI веках</h3>
+<div class="side-panel-r">
+<div class="gb" style="margin:0;"><div class="glbl">Текст экскурсовода</div>
+<p>Добро пожаловать в третий зал! Здесь мы проследим, как память о человеке превращается в легенду, а легенда — в национальный символ. «Житие Александра Невского» составлено уже в конце XIII века — очень быстро по средневековым меркам. В 1380 году, накануне Куликовской битвы, по преданию, инокам было видение: Александр восстал из гроба помочь своему правнуку Дмитрию Донскому. В 1547 году Московский собор при Иване Грозном канонизировал Александра.</p>
+</div>
+<div class="side-box">
+<h4>Этапы почитания</h4>
+<ul>
+<li><strong style="color:var(--gl);">1263</strong> — смерть, местное почитание</li>
+<li><strong style="color:var(--gl);">кон. XIII в.</strong> — составление Жития</li>
+<li><strong style="color:var(--gl);">1380</strong> — видение перед Куликовской битвой</li>
+<li><strong style="color:var(--gl);">1547</strong> — канонизация Собором</li>
+</ul>
+</div>
+</div>
+<div class="cit">
+<p>Да и ныне присно видимъ образъ его честнаго лица, яко во зерцале, понеже духовная благодать осеняетъ нетленные его мощи.</p>
+<span class="cit-src">— Житие Александра Невского (о почитании мощей). Памятники литературы Древней Руси. XIII в. М., 1981. С. 439.</span>
+</div>
+<div class="cv"><p class="cvlbl">Вывод по подтеме</p><p>Канонизация 1547 года завершила превращение исторической личности в церковного святого и политический символ государственности.</p></div>
+<div class="carousel" id="c-t3-1">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/nevsky-icon.jpg" alt="Икона Александра Невского. XIX в. — образ святого благоверного воина" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Икона Александра Невского. XIX в. — образ святого благоверного воина</div></div><div class="carousel-slide"><img src="images/nevsky-shroud.jpg" alt="Покров (плащаница) с образом Александра Невского. Государственный Эрмитаж" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Покров (плащаница) с образом Александра Невского. Государственный Эрмитаж</div></div><div class="carousel-slide"><img src="images/vladimir-cathedral.jpg" alt="Успенский собор во Владимире — здесь хранились мощи Александра до их перенесения в Петербург" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Успенский собор во Владимире — здесь хранились мощи Александра до их перенесения в Петербург</div></div><div class="carousel-slide"><img src="images/nevsky-portrait.jpg" alt="Образ Александра Невского в русской живописи после канонизации 1547 года" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Образ Александра Невского в русской живописи после канонизации 1547 года</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+<div class="trl">· · ·</div>
+<div class="sub">
+<span class="sublbl">Подтема 2</span>
+<h3>Александр Невский в эпоху Петра I</h3>
+<div class="fig">
+<svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern id="engrH" width="3" height="3" patternUnits="userSpaceOnUse"><line x1="0" y1="1.5" x2="3" y2="1.5" stroke="#1A1A2A" stroke-width=".3"/></pattern>
+<linearGradient id="skyN" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#080810"/><stop offset="100%" stop-color="#101020"/></linearGradient>
+</defs>
+<rect width="700" height="260" fill="url(#skyN)"/>
+<!-- Stars -->
+<g fill="#C9A84C" opacity=".15"><circle cx="50" cy="25" r="1"/><circle cx="120" cy="40" r=".8"/><circle cx="200" cy="15" r="1"/><circle cx="320" cy="30" r=".7"/><circle cx="480" cy="20" r=".9"/><circle cx="580" cy="35" r="1"/><circle cx="650" cy="18" r=".6"/></g>
+<!-- Water/Neva -->
+<rect x="0" y="195" width="700" height="65" fill="#080A14"/>
+<g stroke="#1A2A4A" stroke-width=".3" fill="none" opacity=".5">
+<path d="M0 208 Q50 205 100 208 Q150 211 200 208 Q250 205 300 208 Q350 211 400 208 Q450 205 500 208 Q550 211 600 208 Q650 205 700 208"/>
+<path d="M0 220 Q80 217 160 220 Q240 223 320 220 Q400 217 480 220 Q560 223 640 220 Q680 218 700 220"/>
+</g>
+<!-- Monastery / Lavra — engraving style -->
+<g stroke="#8B8BAA" fill="url(#engrH)" stroke-width=".8">
+<!-- Left wing -->
+<rect x="155" y="115" width="75" height="80"/>
+<rect x="158" y="118" width="18" height="25" rx="9 9 0 0" fill="#080810"/>
+<rect x="185" y="118" width="18" height="25" rx="9 9 0 0" fill="#080810"/>
+<rect x="212" y="118" width="15" height="25" rx="7 7 0 0" fill="#080810"/>
+<!-- Right wing -->
+<rect x="470" y="115" width="75" height="80"/>
+<rect x="473" y="118" width="18" height="25" rx="9 9 0 0" fill="#080810"/>
+<rect x="500" y="118" width="18" height="25" rx="9 9 0 0" fill="#080810"/>
+<rect x="527" y="118" width="15" height="25" rx="7 7 0 0" fill="#080810"/>
+<!-- Main cathedral -->
+<rect x="230" y="85" width="240" height="110"/>
+<!-- Columns -->
+<rect x="250" y="95" width="10" height="90" fill="#2A2A3A"/>
+<rect x="275" y="95" width="10" height="90" fill="#2A2A3A"/>
+<rect x="415" y="95" width="10" height="90" fill="#2A2A3A"/>
+<rect x="440" y="95" width="10" height="90" fill="#2A2A3A"/>
+<!-- Windows -->
+<rect x="300" y="100" width="14" height="30" rx="7 7 0 0" fill="#080810"/>
+<rect x="330" y="100" width="14" height="30" rx="7 7 0 0" fill="#080810"/>
+<rect x="358" y="100" width="14" height="30" rx="7 7 0 0" fill="#080810"/>
+<rect x="386" y="100" width="14" height="30" rx="7 7 0 0" fill="#080810"/>
+</g>
+<!-- Main dome -->
+<path d="M310 83 Q350 45 390 83" fill="#1A1A2A" stroke="#8B8BAA" stroke-width=".8"/>
+<rect x="347" y="25" width="6" height="22" fill="#C9A84C" opacity=".7"/>
+<line x1="350" y1="15" x2="350" y2="27" stroke="#C9A84C" stroke-width="1.2"/>
+<line x1="344" y1="20" x2="356" y2="20" stroke="#C9A84C" stroke-width="1.2"/>
+<!-- Side domes -->
+<path d="M253 83 Q270 62 287 83" fill="#1A1A2A" stroke="#8B8BAA" stroke-width=".6"/>
+<rect x="268" y="50" width="4" height="14" fill="#C9A84C" opacity=".5"/>
+<line x1="270" y1="43" x2="270" y2="52" stroke="#C9A84C" stroke-width="1"/>
+<line x1="266" y1="47" x2="274" y2="47" stroke="#C9A84C" stroke-width="1"/>
+<path d="M413 83 Q430 62 447 83" fill="#1A1A2A" stroke="#8B8BAA" stroke-width=".6"/>
+<rect x="428" y="50" width="4" height="14" fill="#C9A84C" opacity=".5"/>
+<line x1="430" y1="43" x2="430" y2="52" stroke="#C9A84C" stroke-width="1"/>
+<line x1="426" y1="47" x2="434" y2="47" stroke="#C9A84C" stroke-width="1"/>
+<!-- Gates -->
+<rect x="338" y="152" width="24" height="43" rx="12 12 0 0" fill="#080810" stroke="#8B8BAA" stroke-width=".6"/>
+<!-- Ground line -->
+<line x1="100" y1="195" x2="600" y2="195" stroke="#5A5A7A" stroke-width=".5"/>
+<!-- Label -->
+<text x="350" y="210" text-anchor="middle" font-family="Georgia" font-size="12" fill="#C9A84C" font-weight="bold" letter-spacing="1">АЛЕКСАНДРО-НЕВСКАЯ ЛАВРА</text>
+<text x="350" y="224" text-anchor="middle" font-family="Georgia" font-size="9" fill="#8B6914">Основана Петром I в 1710 г. — Санкт-Петербург</text>
+<text x="350" y="237" text-anchor="middle" font-family="Georgia" font-size="8" fill="#6A6A8A">Мощи Александра Невского перевезены из Владимира в 1724 г.</text>
+<!-- Order star (right) -->
+<g transform="translate(620,90)">
+<circle r="40" fill="none" stroke="#C9A84C" stroke-width="1.2"/>
+<circle r="33" fill="none" stroke="#8B6914" stroke-width=".6"/>
+<g stroke="#C9A84C" stroke-width=".7" opacity=".5"><line x1="0" y1="-33" x2="0" y2="-24"/><line x1="23" y1="-23" x2="17" y2="-17"/><line x1="33" y1="0" x2="24" y2="0"/><line x1="23" y1="23" x2="17" y2="17"/><line x1="0" y1="33" x2="0" y2="24"/><line x1="-23" y1="23" x2="-17" y2="17"/><line x1="-33" y1="0" x2="-24" y2="0"/><line x1="-23" y1="-23" x2="-17" y2="-17"/></g>
+<line x1="0" y1="-18" x2="0" y2="18" stroke="#C9A84C" stroke-width="2"/>
+<line x1="-18" y1="0" x2="18" y2="0" stroke="#C9A84C" stroke-width="2"/>
+<circle r="4" fill="#C9A84C"/>
+<text x="0" y="50" text-anchor="middle" font-family="Georgia" font-size="8" fill="#C9A84C">Орден св. Александра</text>
+<text x="0" y="61" text-anchor="middle" font-family="Georgia" font-size="8" fill="#C9A84C">Невского (1725 г.)</text>
+</g>
+<text x="350" y="254" text-anchor="middle" font-family="Georgia" font-size="8" fill="#5C4A2A" font-style="italic">Вид Александро-Невской лавры. Авторская реконструкция в стиле гравюры XVIII в.</text>
+</svg>
+<div class="figcap">Александро-Невская лавра (основана 1710 г.) и орден Святого Александра Невского (учреждён 1725 г.) — два ключевых символа, связавших средневекового святого с имперской государственностью. Реконструкция в стиле гравюры XVIII в.</div>
+</div>
+<div class="gb"><div class="glbl">Текст экскурсовода</div>
+<p>В 1710 году Пётр I основал Александро-Невский монастырь в Санкт-Петербурге. В 1724 году мощи Александра Невского были торжественно перевезены из Владимира в Петербург. Россия завершала Северную войну со Швецией — тем самым противником, которого Александр победил на Неве. Параллель была намеренной. В 1725 году Екатерина I учредила орден Святого Александра Невского — одну из высших наград Империи. В 1942 году орден возрождён как боевая награда СССР.</p>
+</div>
+<div class="cit">
+<p>Пётр Великий, основав лавру на предполагаемом месте Невской битвы, превратил средневекового святого в символ нового государства. Это был сознательный акт создания исторической преемственности.</p>
+<span class="cit-src">— Кривошеев Ю.В., Соколов Р.А. «Александр Невский»: создание киношедевра. СПб., 2012. С. 15.</span>
+</div>
+<div class="cv"><p class="cvlbl">Вывод по подтеме</p><p>Пётр I превратил Александра из церковного святого в государственный символ — образ, оказавшийся удивительно долговечным.</p></div>
+<div class="carousel" id="c-t3-2">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/lavra-today.jpg" alt="Александро-Невская лавра в Санкт-Петербурге, основана Петром I в 1710 г." loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Александро-Невская лавра в Санкт-Петербурге, основана Петром I в 1710 г.</div></div><div class="carousel-slide"><img src="images/order-imperial.jpg" alt="Орден Святого Александра Невского — учреждён в 1725 году, одна из высших наград Империи" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Орден Святого Александра Невского — учреждён в 1725 году, одна из высших наград Империи</div></div><div class="carousel-slide"><img src="images/order-soviet.jpg" alt="Советский орден Александра Невского (1942) — возрождён в годы Великой Отечественной войны" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Советский орден Александра Невского (1942) — возрождён в годы Великой Отечественной войны</div></div><div class="carousel-slide"><img src="images/nevsky-statue.jpg" alt="Памятник Александру Невскому — образ святого воина пережил века" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Памятник Александру Невскому — образ святого воина пережил века</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+<div class="trl">· · ·</div>
+<div class="sub">
+<span class="sublbl">Подтема 3</span>
+<h3>Образ в XIX–XX вв.: от Карамзина до Эйзенштейна</h3>
+<div class="vbl">
+<div class="vbl-in">
+<svg viewBox="0 0 520 160" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;margin:0 auto 1.2rem;display:block;">
+<rect width="520" height="160" fill="#080808"/>
+<!-- Film perforations top -->
+<rect width="520" height="18" fill="#0E0E0E"/><g fill="#060606"><rect x="10" y="3" width="13" height="11" rx="2"/><rect x="35" y="3" width="13" height="11" rx="2"/><rect x="60" y="3" width="13" height="11" rx="2"/><rect x="85" y="3" width="13" height="11" rx="2"/><rect x="110" y="3" width="13" height="11" rx="2"/><rect x="135" y="3" width="13" height="11" rx="2"/><rect x="160" y="3" width="13" height="11" rx="2"/><rect x="185" y="3" width="13" height="11" rx="2"/><rect x="210" y="3" width="13" height="11" rx="2"/><rect x="235" y="3" width="13" height="11" rx="2"/><rect x="260" y="3" width="13" height="11" rx="2"/><rect x="285" y="3" width="13" height="11" rx="2"/><rect x="310" y="3" width="13" height="11" rx="2"/><rect x="335" y="3" width="13" height="11" rx="2"/><rect x="360" y="3" width="13" height="11" rx="2"/><rect x="385" y="3" width="13" height="11" rx="2"/><rect x="410" y="3" width="13" height="11" rx="2"/><rect x="435" y="3" width="13" height="11" rx="2"/><rect x="460" y="3" width="13" height="11" rx="2"/><rect x="485" y="3" width="13" height="11" rx="2"/></g>
+<!-- Film perforations bottom -->
+<rect y="142" width="520" height="18" fill="#0E0E0E"/><g fill="#060606"><rect x="10" y="146" width="13" height="11" rx="2"/><rect x="35" y="146" width="13" height="11" rx="2"/><rect x="60" y="146" width="13" height="11" rx="2"/><rect x="85" y="146" width="13" height="11" rx="2"/><rect x="110" y="146" width="13" height="11" rx="2"/><rect x="135" y="146" width="13" height="11" rx="2"/><rect x="160" y="146" width="13" height="11" rx="2"/><rect x="185" y="146" width="13" height="11" rx="2"/><rect x="210" y="146" width="13" height="11" rx="2"/><rect x="235" y="146" width="13" height="11" rx="2"/><rect x="260" y="146" width="13" height="11" rx="2"/><rect x="285" y="146" width="13" height="11" rx="2"/></g>
+<!-- Frame content -->
+<rect x="0" y="18" width="520" height="124" fill="#0A0E15"/>
+<rect x="0" y="35" width="520" height="32" fill="rgba(0,0,0,.6)"/>
+<text x="260" y="54" text-anchor="middle" font-family="Georgia,serif" font-size="16" fill="#E8D08A" font-weight="bold" letter-spacing="2">АЛЕКСАНДР НЕВСКИЙ</text>
+<text x="260" y="65" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#C9A84C" letter-spacing="3">реж. С. М. ЭЙЗЕНШТЕЙН · МОСФИЛЬМ · 1938</text>
+<text x="260" y="95" text-anchor="middle" font-family="Georgia" font-size="10" fill="#8B7355">в гл. роли — Николай Черкасов</text>
+<text x="260" y="110" text-anchor="middle" font-family="Georgia" font-size="10" fill="#8B7355">музыка — Сергей Прокофьев</text>
+<text x="260" y="130" text-anchor="middle" font-family="Georgia" font-size="9" fill="#6A5A40" font-style="italic">«Кто с мечом к нам придёт, от меча и погибнет!»</text>
+</svg>
+<a href="https://www.youtube.com/watch?v=sSmgAanTiXY" target="_blank" rel="noopener">▶ Смотреть фильм на YouTube</a>
+<p class="vbl-d">Общественное достояние · Откроется в новой вкладке</p>
+</div>
+<div class="vbl-cap">Кинофильм «Александр Невский» (1938). Снят по заданию Сталина как антифашистский манифест. Обратите внимание: образы русских — тёплые, живые; крестоносцы — холодные, механические.</div>
+</div>
+<div class="gb"><div class="glbl">Текст экскурсовода</div>
+<p>Николай Карамзин в «Истории государства Российского» написал об Александре с нескрываемым восхищением. «Теория официальной народности» при Николае I сделала его одним из столпов триады «Православие — Самодержавие — Народность». Но подлинный пик популярности — фильм Эйзенштейна 1938 года: средневековый князь громит тевтонских рыцарей — прозрачная аллюзия на нацизм. Плакаты с Невским появились в первые дни Великой Отечественной. Прокофьев написал кантату «Александр Невский» — шедевр русской музыки XX века.</p>
+</div>
+<div class="cit">
+<p>Имя Александра навсегда сделалось самым почитаемым, самым любимым на Руси; ибо слава его походов, подвигов соответствовала общему чаянию народа увидеть защитника.</p>
+<span class="cit-src">— Карамзин Н.М. История государства Российского. Т. IV. СПб., 1817. Гл. 1.</span>
+</div>
+<div class="cv"><p class="cvlbl">Вывод по подтеме</p><p>В XX веке образ стал инструментом государственной пропаганды — и одновременно основой подлинных культурных шедевров.</p></div>
+<div class="carousel" id="c-t3-3">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/eisenstein-film.jpg" alt="Кадр из фильма «Александр Невский» (1938). Н. Черкасов в роли князя" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Кадр из фильма «Александр Невский» (1938). Н. Черкасов в роли князя</div></div><div class="carousel-slide"><img src="images/eisenstein-film.jpg" alt="Сергей Эйзенштейн — режиссёр фильма «Александр Невский» (1938)" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Сергей Эйзенштейн — режиссёр фильма «Александр Невский» (1938)</div></div><div class="carousel-slide"><img src="images/ice-battle.jpg" alt="Сцена Ледового побоища — центральный эпизод фильма Эйзенштейна" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Сцена Ледового побоища — центральный эпизод фильма Эйзенштейна</div></div><div class="carousel-slide"><img src="images/nevsky-shroud.jpg" alt="Икона — один из образов, переживших века: от средневекового святого до советского плаката" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Икона — один из образов, переживших века: от средневекового святого до советского плаката</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+<div class="trl">· · ·</div>
+<div class="sub">
+<span class="sublbl">Подтема 4</span>
+<h3>Наследие в современной России</h3>
+<div class="fig">
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+<rect width="700" height="200" fill="#080604"/>
+<!-- Timeline line -->
+<line x1="45" y1="95" x2="655" y2="95" stroke="#C9A84C" stroke-width="1.5"/>
+<!-- Dots and branches -->
+<g fill="#C9A84C">
+<circle cx="80" cy="95" r="5" stroke="#E8D08A" stroke-width="1"/><line x1="80" y1="75" x2="80" y2="90" stroke="#C9A84C" stroke-width=".8"/>
+<circle cx="185" cy="95" r="5" stroke="#E8D08A" stroke-width="1"/><line x1="185" y1="75" x2="185" y2="90" stroke="#C9A84C" stroke-width=".8"/>
+<circle cx="295" cy="95" r="5" stroke="#E8D08A" stroke-width="1"/><line x1="295" y1="75" x2="295" y2="90" stroke="#C9A84C" stroke-width=".8"/>
+<circle cx="405" cy="95" r="5" stroke="#E8D08A" stroke-width="1"/><line x1="405" y1="75" x2="405" y2="90" stroke="#C9A84C" stroke-width=".8"/>
+<circle cx="515" cy="95" r="5" stroke="#E8D08A" stroke-width="1"/><line x1="515" y1="75" x2="515" y2="90" stroke="#C9A84C" stroke-width=".8"/>
+<circle cx="620" cy="95" r="5" stroke="#E8D08A" stroke-width="1"/><line x1="620" y1="75" x2="620" y2="90" stroke="#C9A84C" stroke-width=".8"/>
+</g>
+<!-- Dates above -->
+<g font-family="Georgia" font-size="11" text-anchor="middle" fill="#E8D08A" font-weight="bold">
+<text x="80" y="68">1263</text><text x="185" y="68">1547</text><text x="295" y="68">1724</text><text x="405" y="68">1938</text><text x="515" y="68">1995</text><text x="620" y="68">2008</text>
+</g>
+<!-- Labels below -->
+<g font-family="Georgia" font-size="8" text-anchor="middle" fill="#A08B5C">
+<text x="80" y="112">Смерть</text><text x="80" y="122">Местное</text><text x="80" y="132">почитание</text>
+<text x="185" y="112">Канони-</text><text x="185" y="122">зация</text><text x="185" y="132">Собор 1547</text>
+<text x="295" y="112">Перенос</text><text x="295" y="122">мощей</text><text x="295" y="132">в Петербург</text>
+<text x="405" y="112">Фильм</text><text x="405" y="122">Эйзенштейна</text><text x="405" y="132">Орден СССР</text>
+<text x="515" y="112">День воинской</text><text x="515" y="122">славы</text><text x="515" y="132">18 апреля</text>
+<text x="620" y="112">«Имя</text><text x="620" y="122">России»</text><text x="620" y="132">1-е место</text>
+</g>
+<!-- Epoch labels -->
+<g font-family="Georgia" font-size="7" fill="#5C4A2A" font-style="italic">
+<text x="80" y="148">Святой</text>
+<text x="185" y="148">Святой-защитник</text>
+<text x="295" y="148">Государственный символ</text>
+<text x="405" y="148">Антифашистский образ</text>
+<text x="515" y="148">Патриотический символ</text>
+<text x="620" y="148">Национальный герой</text>
+</g>
+<text x="350" y="185" text-anchor="middle" font-family="Georgia" font-size="9" fill="#5C4A2A" font-style="italic">Трансформация образа Александра Невского в русской культуре (XIII–XXI вв.)</text>
+</svg>
+<div class="figcap">Хронологическая шкала формирования образа Александра Невского. Каждая эпоха наполняла образ собственным содержанием — от местного святого до национального героя, занявшего первое место в проекте «Имя России» (2008).</div>
+</div>
+<div class="gb"><div class="glbl">Текст экскурсовода</div>
+<p>В 2008 году в проекте «Имя России» Александр Невский занял первое место, опередив Сталина, Пушкина и Петра Великого. Памятники ему стоят в десятках городов. 18 апреля — день победы на Чудском озере — включён в федеральный перечень дней воинской славы (1995). Александро-Невская лавра по сей день является действующим монастырём.</p>
+<p>Завершая экскурсию, хочу напомнить: великие деятели редко бывают однозначными. В Александре соединились полководец и дипломат, герой и человек, вынужденный идти на компромиссы. Именно эта сложность делает его фигуру по-настоящему важной для понимания русской истории.</p>
+</div>
+<div class="cit">
+<p>Каждая эпоха имеет своего Александра Невского: для XIII века он — святой воин, для Петра — предшественник в борьбе со Швецией, для Сталина — антифашистский символ, для современной России — воплощение национальной идеи.</p>
+<span class="cit-src">— Ранчин А.М. «Житие Александра Невского» и византийская агиография // Древняя Русь. 2002. № 4. С. 25.</span>
+</div>
+<div class="cv"><p class="cvlbl">Общий вывод по экскурсии и музею</p><p>Историческая память об Александре Невском — живой организм, который каждая эпоха наполняет своим смыслом. Но в основе всех образов лежит реальная личность — человек, сделавший невозможный выбор в невозможных обстоятельствах и сохранивший народ. Именно это — главный урок нашего музея.</p></div>
+<div class="carousel" id="c-t3-4">
+  <div class="carousel-track"><div class="carousel-slide"><img src="images/nevsky-statue.jpg" alt="Памятник Александру Невскому во Пскове (современный). Один из десятков по всей России" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Памятник Александру Невскому во Пскове (современный). Один из десятков по всей России</div></div><div class="carousel-slide"><img src="images/lavra-today.jpg" alt="Александро-Невская лавра сегодня — действующий монастырь и место памяти" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Александро-Невская лавра сегодня — действующий монастырь и место памяти</div></div><div class="carousel-slide"><img src="images/nevsky-icon.jpg" alt="Икона современного письма — в проекте «Имя России» (2008) Александр занял 1-е место" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Икона современного письма — в проекте «Имя России» (2008) Александр занял 1-е место</div></div><div class="carousel-slide"><img src="images/nevsky-portrait.jpg" alt="Образ Александра Невского в разных эпохах — воплощение национальной идеи" loading="lazy" onerror="this.style.display='none'"><div class="carousel-cap">Образ Александра Невского в разных эпохах — воплощение национальной идеи</div></div></div>
+  <button class="carousel-btn prev">&#9664;</button>
+  <button class="carousel-btn next">&#9654;</button>
+  <div class="carousel-dots"><span class="carousel-dot active" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span><span class="carousel-dot" onclick="void(0)"></span></div>
+</div>
+</div>
+<div class="tb">
+<p class="tbt">🏛 Задания по экскурсии</p>
+<div class="ti"><div class="tn">1</div><p class="tt2"><strong>Хронология образа:</strong> На основе временной шкалы опишите каждую точку: каким был образ и зачем он был нужен обществу?</p></div>
+<div class="ti"><div class="tn">2</div><p class="tt2"><strong>Анализ фильма:</strong> Посмотрите отрывок фильма Эйзенштейна по ссылке. Как режиссёр создаёт образы «своих» и «чужих»? Какие художественные приёмы использует?</p></div>
+<div class="ti"><div class="tn">3</div><p class="tt2"><strong>Сравнение источников:</strong> Сопоставьте цитату из «Жития» XIII в. и из книги А.А. Горского. В чём отличия? Почему?</p></div>
+<div class="ti"><div class="tn">4</div><p class="tt2"><strong>Рефлексия:</strong> «Каждое время создаёт своего Александра Невского» — эссе 8–12 предложений с примерами из экскурсии.</p></div>
+</div>
+<div class="src"><p class="srct">Использованные источники</p>
+<ol class="srcl">
+<li>Горский А.А. Александр Невский. — М.: Молодая гвардия, 2016. — 239 с.</li>
+<li>Карамзин Н.М. История государства Российского. Т. IV. — СПб., 1817.</li>
+<li>Кривошеев Ю.В., Соколов Р.А. «Александр Невский»: создание киношедевра. — СПб., 2012.</li>
+<li>Клосс Б.М. Житие Александра Невского // Письменные памятники Древней Руси. — СПб., 2003.</li>
+<li>Скрынников Р.Г. Святители и власти. — Л., 1990.</li>
+<li>Ранчин А.М. «Житие Александра Невского» и византийская агиография // Древняя Русь. 2002. № 4.</li>
+<li>Имя России: исторический выбор — 2008. — М.: АСТ, 2009.</li>
+<li>Фильм: Эйзенштейн С.М. Александр Невский. Мосфильм, 1938. (Общественное достояние.)</li>
+</ol></div>
+</div>
+
+</div></div></section>
+
+
+<section class="quiz-section" id="quiz">
+<div class="quiz-wrap">
+<p class="sl lt" style="text-align:center;">Проверь себя</p>
+<h2 class="st lt" style="text-align:center;margin-bottom:.5rem;">Интерактивная викторина</h2>
+<div class="sdiv" style="margin:1.2rem auto 2.5rem;"></div>
+
+<div class="quiz-q" id="qq1">
+<div class="quiz-q-head"><span class="quiz-q-num">Вопрос 1 из 6</span><p class="quiz-q-text">В каком году произошла Невская битва?</p></div>
+<div class="quiz-opts">
+<button class="quiz-opt" onclick="checkAnswer(this,'qq1',false,'15 июля 1240 года — именно тогда дружина Александра разгромила шведский лагерь на Неве.')">1237</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq1',true,'15 июля 1240 года — именно тогда дружина Александра разгромила шведский лагерь на Неве.')">1240</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq1',false,'15 июля 1240 года — именно тогда дружина Александра разгромила шведский лагерь на Неве.')">1242</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq1',false,'15 июля 1240 года — именно тогда дружина Александра разгромила шведский лагерь на Неве.')">1252</button>
+</div>
+<div class="quiz-hint" id="hint-qq1"></div>
+</div>
+
+<div class="quiz-q" id="qq2">
+<div class="quiz-q-head"><span class="quiz-q-num">Вопрос 2 из 6</span><p class="quiz-q-text">Как назывался боевой строй крестоносцев на Ледовом побоище?</p></div>
+<div class="quiz-opts">
+<button class="quiz-opt" onclick="checkAnswer(this,'qq2',false,'«Свинья» — клинообразный строй тяжёлой рыцарской конницы, прорывавший центр вражеского войска.')">Клин</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq2',true,'«Свинья» — клинообразный строй тяжёлой рыцарской конницы, прорывавший центр вражеского войска.')">Свинья</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq2',false,'«Свинья» — клинообразный строй тяжёлой рыцарской конницы, прорывавший центр вражеского войска.')">Стена</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq2',false,'«Свинья» — клинообразный строй тяжёлой рыцарской конницы, прорывавший центр вражеского войска.')">Круг</button>
+</div>
+<div class="quiz-hint" id="hint-qq2"></div>
+</div>
+
+<div class="quiz-q" id="qq3">
+<div class="quiz-q-head"><span class="quiz-q-num">Вопрос 3 из 6</span><p class="quiz-q-text">Куда ездил Александр Невский в 1247–1249 годах за ярлыком на великое княжение?</p></div>
+<div class="quiz-opts">
+<button class="quiz-opt" onclick="checkAnswer(this,'qq3',true,'В 1247–1249 годах Александр добрался до Каракорума — столицы Монгольской империи — и вернулся с ярлыком великого князя.')">Каракорум</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq3',false,'В 1247–1249 годах Александр добрался до Каракорума — столицы Монгольской империи — и вернулся с ярлыком великого князя.')">Сарай</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq3',false,'В 1247–1249 годах Александр добрался до Каракорума — столицы Монгольской империи — и вернулся с ярлыком великого князя.')">Киев</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq3',false,'В 1247–1249 годах Александр добрался до Каракорума — столицы Монгольской империи — и вернулся с ярлыком великого князя.')">Константинополь</button>
+</div>
+<div class="quiz-hint" id="hint-qq3"></div>
+</div>
+
+<div class="quiz-q" id="qq4">
+<div class="quiz-q-head"><span class="quiz-q-num">Вопрос 4 из 6</span><p class="quiz-q-text">В каком году Александр Невский был канонизирован Московским собором?</p></div>
+<div class="quiz-opts">
+<button class="quiz-opt" onclick="checkAnswer(this,'qq4',false,'Александр был канонизирован в 1547 году при Иване Грозном — на Московском соборе.')">1380</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq4',true,'Александр был канонизирован в 1547 году при Иване Грозном — на Московском соборе.')">1547</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq4',false,'Александр был канонизирован в 1547 году при Иване Грозном — на Московском соборе.')">1724</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq4',false,'Александр был канонизирован в 1547 году при Иване Грозном — на Московском соборе.')">1938</button>
+</div>
+<div class="quiz-hint" id="hint-qq4"></div>
+</div>
+
+<div class="quiz-q" id="qq5">
+<div class="quiz-q-head"><span class="quiz-q-num">Вопрос 5 из 6</span><p class="quiz-q-text">Кто основал Александро-Невский монастырь (лавру) в Санкт-Петербурге?</p></div>
+<div class="quiz-opts">
+<button class="quiz-opt" onclick="checkAnswer(this,'qq5',false,'В 1710 году Пётр I основал монастырь на предполагаемом месте Невской битвы, превратив средневекового святого в символ новой империи.')">Иван Грозный</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq5',true,'В 1710 году Пётр I основал монастырь на предполагаемом месте Невской битвы, превратив средневекового святого в символ новой империи.')">Пётр I</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq5',false,'В 1710 году Пётр I основал монастырь на предполагаемом месте Невской битвы, превратив средневекового святого в символ новой империи.')">Екатерина II</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq5',false,'В 1710 году Пётр I основал монастырь на предполагаемом месте Невской битвы, превратив средневекового святого в символ новой империи.')">Николай I</button>
+</div>
+<div class="quiz-hint" id="hint-qq5"></div>
+</div>
+
+<div class="quiz-q" id="qq6">
+<div class="quiz-q-head"><span class="quiz-q-num">Вопрос 6 из 6</span><p class="quiz-q-text">Как называется знаменитый фильм Сергея Эйзенштейна об Александре Невском, вышедший в 1938 году?</p></div>
+<div class="quiz-opts">
+<button class="quiz-opt" onclick="checkAnswer(this,'qq6',false,'Фильм «Александр Невский» (реж. Эйзенштейн, 1938) с музыкой Прокофьева стал антифашистским манифестом накануне Второй мировой войны.')">«Александр»</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq6',true,'Фильм «Александр Невский» (реж. Эйзенштейн, 1938) с музыкой Прокофьева стал антифашистским манифестом накануне Второй мировой войны.')">«Александр Невский»</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq6',false,'Фильм «Александр Невский» (реж. Эйзенштейн, 1938) с музыкой Прокофьева стал антифашистским манифестом накануне Второй мировой войны.')">«Ледовое побоище»</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'qq6',false,'Фильм «Александр Невский» (реж. Эйзенштейн, 1938) с музыкой Прокофьева стал антифашистским манифестом накануне Второй мировой войны.')">«Русь»</button>
+</div>
+<div class="quiz-hint" id="hint-qq6"></div>
+</div>
+
+<div class="quiz-score" id="quiz-score" style="display:none;">
+<div class="quiz-score-num" id="score-display">0/6</div>
+<p class="quiz-score-lbl" id="score-msg"></p>
+<button class="quiz-reset" onclick="resetQuiz()">↺ Пройти заново</button>
+</div>
+</div>
+</section>
+
+<script>
+// ===== CAROUSEL ENGINE =====
+function initCarousel(id) {
+  var c = document.getElementById(id);
+  if (!c) return;
+  var track = c.querySelector('.carousel-track');
+  var slides = c.querySelectorAll('.carousel-slide');
+  var dots = c.querySelectorAll('.carousel-dot');
+  var cur = 0, n = slides.length, timer = null;
+
+  function go(i) {
+    cur = (i + n) % n;
+    track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+    dots.forEach(function(d, idx){ d.classList.toggle('active', idx === cur); });
+  }
+
+  function startAuto() {
+    stopAuto();
+    timer = setInterval(function(){ go(cur + 1); }, 5000);
+  }
+  function stopAuto(){ if (timer) { clearInterval(timer); timer = null; } }
+  function pauseThenResume() { stopAuto(); setTimeout(startAuto, 10000); }
+
+  c.querySelector('.prev').addEventListener('click', function(){ go(cur-1); pauseThenResume(); });
+  c.querySelector('.next').addEventListener('click', function(){ go(cur+1); pauseThenResume(); });
+  dots.forEach(function(d, i){ d.addEventListener('click', function(){ go(i); pauseThenResume(); }); });
+
+  go(0);
+  startAuto();
+}
+
+// ===== QUIZ ENGINE =====
+var quizScore = 0, quizAnswered = 0, quizTotal = 6;
+
+function checkAnswer(btn, qid, isCorrect, hint) {
+  var qel = document.getElementById(qid);
+  if (qel.classList.contains('done')) return;
+  qel.classList.add('done');
+  var opts = qel.querySelectorAll('.quiz-opt');
+  opts.forEach(function(o){ o.classList.add('answered'); });
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    opts.forEach(function(o){
+      if (o.onclick && o.onclick.toString().indexOf('true') > -1) o.classList.add('correct');
+    });
+  }
+  var hintEl = document.getElementById('hint-' + qid);
+  hintEl.textContent = (isCorrect ? '✓ Верно! ' : '✗ Неверно. ') + hint;
+  hintEl.classList.add('show');
+  if (isCorrect) quizScore++;
+  quizAnswered++;
+  if (quizAnswered === quizTotal) showScore();
+}
+
+function showScore() {
+  var el = document.getElementById('quiz-score');
+  el.style.display = 'block';
+  document.getElementById('score-display').textContent = quizScore + '/' + quizTotal;
+  var msgs = ['Попробуй ещё раз — ты сможешь лучше!', 'Неплохо! Изучи материал подробнее.', 'Хороший результат! Почти отлично.', 'Отлично! Ты знаешь эпоху Александра Невского!'];
+  var idx = quizScore <= 2 ? 0 : quizScore <= 4 ? 1 : quizScore === 5 ? 2 : 3;
+  document.getElementById('score-msg').textContent = msgs[idx];
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetQuiz() {
+  quizScore = 0; quizAnswered = 0;
+  document.querySelectorAll('.quiz-q').forEach(function(q){
+    q.classList.remove('done');
+    q.querySelectorAll('.quiz-opt').forEach(function(o){ o.classList.remove('correct','wrong','answered'); });
+    q.querySelectorAll('.quiz-hint').forEach(function(h){ h.classList.remove('show'); h.textContent=''; });
+  });
+  document.getElementById('quiz-score').style.display = 'none';
+  document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ===== INIT ALL CAROUSELS =====
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.carousel').forEach(function(c){ initCarousel(c.id); });
+});
+</script>
+
+<footer>
+<p class="ft">Виртуальный музей «Александр Невский»</p>
+<p>Учебный проект · Курс «История России» · Русь XIII–XV вв.</p>
+<p style="margin-top:.8rem;font-size:.78rem;opacity:.4;">Все исторические факты основаны на академических источниках, указанных в каждой экскурсии. Иллюстрации — авторские SVG-реконструкции по историческим данным. Цитаты приведены по изданиям, указанным в списках литературы.</p>
+</footer>
+
+<script>
+function showTour(n){
+document.querySelectorAll('.exc').forEach(function(e){e.classList.remove('active');});
+document.querySelectorAll('.etab').forEach(function(b){b.classList.remove('active');});
+document.getElementById('tour-'+n).classList.add('active');
+document.querySelectorAll('.etab')[n-1].classList.add('active');
+document.getElementById('tours').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body></html>
